@@ -1,4 +1,14 @@
-# How to run
+# Virtual Env Setup
+
+So you have auto complete
+
+```bash
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+## How to run
 
 **You only need to run it once.**
 
