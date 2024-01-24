@@ -1,5 +1,5 @@
 from classifiers import get_target_model
-from attacks import do_perturbation
+from attacks import do_perturbation, do_locsearchadv
 from PIL import Image
 import requests
 import torch
@@ -19,7 +19,7 @@ if __name__ == '__main__':
     
     torch.save(input_tensor, 'input_img.pt')
     print(input_tensor)
-    
+    do_locsearchadv(input_tensor, 0.3, 0, target_model)
     # do_perturbation(input_tensor, 341, target_model)
     
     # logit = target_model.predict(input_tensor)
