@@ -6,26 +6,33 @@ import requests
 from typing import *
 
 class TargetModel():
-    def __init__(self):
+    def __init__(self, device: str):
         pass
     
     def preprocess(self, image: Image.Image) -> torch.Tensor:
+        pass
+    
+    def getDevice(self) -> str:
         pass
     
     def predict(self, inputs: torch.Tensor) -> Dict[str, Any]:
         pass
     
 class MobileViTModel(TargetModel):
-    def __init__(self):
-        self.model = MobileViTForImageClassification.from_pretrained("apple/mobilevit-small")
+    def __init__(self, device: str):
+        self.model = MobileViTForImageClassification.from_pretrained("apple/mobilevit-small").to(device)
         self.image_processor = MobileViTImageProcessor.from_pretrained("apple/mobilevit-small")
+        self.device = device
         
     def preprocess(self, image: Image.Image) -> torch.Tensor:
         inputs = self.image_processor.preprocess(images=image, return_tensors="pt", do_normalize=True, image_mean=[0,0,0], image_std=[1,1,1])["pixel_values"]
-        return inputs  
+        return inputs.to(self.device)
     
     def id2label(self, id: int) -> str:
         return self.model.config.id2label[id]
+
+    def getDevice(self) -> str:
+        return self.device
     
     def predict(self, inputs: torch.Tensor) -> Dict[str, Any]:
         # annotate inputs type: Dict[str, torch.Tensor]
@@ -45,9 +52,9 @@ class MobileViTModel(TargetModel):
 
     
     
-def get_target_model(model_name: str) -> TargetModel:
+def get_target_model(model_name: str, device: str) -> TargetModel:
     if model_name == "MobileViT":
-        model = MobileViTModel()
+        model = MobileViTModel(device)
         model.model.eval()
         return model
     else:

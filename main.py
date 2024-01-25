@@ -14,13 +14,15 @@ if __name__ == '__main__':
     # image = Image.open(requests.get(url, stream=True).raw)
     pig_img = Image.open("./images/pig.jpg")
     
-    target_model = get_target_model("MobileViT")
+    device = "cuda:0" if torch.cuda.is_available() else "cpu"
+    
+    target_model = get_target_model("MobileViT", device)
     input_tensor = target_model.preprocess(pig_img)
     
-    torch.save(input_tensor, 'input_img.pt')
-    print(input_tensor)
-    do_locsearchadv(input_tensor, 0.3, 0, target_model)
-    # do_perturbation(input_tensor, 341, target_model)
+    # torch.save(input_tensor, 'input_img.pt')
+    # input_tensor = torch.load('input_img.pt')
+    # do_locsearchadv(input_tensor, 10, 1, 3, 5, 5, 1, target_model)
+    do_perturbation(input_tensor, 341, target_model)
     
     # logit = target_model.predict(input_tensor)
     # max_class = logit.max(dim=1)[1].item()
