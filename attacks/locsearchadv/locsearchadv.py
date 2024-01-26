@@ -4,11 +4,22 @@ import numpy as np
 import copy
 import torchvision.transforms as transforms
 
-init_picked_percentage = 0.01 ## small number to speed up running speed
-LB = -1
-UB = 1
+init_picked_percentage = 0.1
+input = torch.load('input_img.pt') # input is an image  so we can 
+LB = 0 #This is just a guess for what the lower and upper bounds should be
+UB = 1  #This is just a guess for what the lower and upper bounds should be
 MODEL_LB = 0
 MODEL_UB = 1
+
+def cyclic(r, b, x, y): 
+    """ r is the perturbation parameter"""
+    
+    specific_data = torch.img[:, b, x, y] # this is not called correctly
+    
+    
+    if(specific_data < LB):
+      
+      return torch.img[:, b, x, y] + (UB - LB)
 
 np.random.seed(2024)
 
@@ -22,6 +33,13 @@ def inRange(val, lower_bound, upper_bound):
             
 def cyclic(r, b, x, y):
     return
+    #if rI (b,x,y) < LB 
+        #return rI(b, x, y) + (UB - LB)
+    #elif rI(b,x,y) > UB
+        #return rI(b, x, y ) - (UB - LB)
+    #else 
+        #return rI(b,x,y)
+    #return
 
 def top_k_prediction_prob(pred, k):
     prob = nn.Softmax(dim=1)(pred)
@@ -80,8 +98,7 @@ def do_locsearchadv(I, p, r, d, t, k, R, model):
 
 # (_, color_channel, x_dim, y_dim) = input.shape
 
-# num_pixel = int(x_dim*y_dim*init_picked_percentage)
-# P_X, P_Y = np.random.choice(range(x_dim), num_pixel), np.random.choice(range(y_dim), num_pixel)
+# input = torch.load('input_img.pt') #loading in an image 
 
 # print(P_X, P_Y, sep="\n")
 

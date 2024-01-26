@@ -12,7 +12,7 @@ if __name__ == '__main__':
     # testing set can just be urls to images in coco dataset
     # url = "http://images.cocodataset.org/val2017/000000039769.jpg"
     # image = Image.open(requests.get(url, stream=True).raw)
-    pig_img = Image.open("./images/pig.jpg")
+    pig_img = Image.open("./images/pig.jpg") # opening a image 
     
     device = "cuda:0" if torch.cuda.is_available() else "cpu"
     
