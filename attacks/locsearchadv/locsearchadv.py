@@ -11,15 +11,19 @@ UB = 1  #This is just a guess for what the lower and upper bounds should be
 MODEL_LB = 0
 MODEL_UB = 1
 
-def cyclic(r, b, x, y): 
+def cyclic(I, r, b, x, y): 
     """ r is the perturbation parameter"""
     
-    specific_data = torch.img[:, b, x, y] # this is not called correctly
-    
+    specific_data = I[:, b, x, y] * r # this is not called correctly
     
     if(specific_data < LB):
-      
-      return torch.img[:, b, x, y] + (UB - LB)
+      return specific_data + (UB - LB)
+    
+    elif(specific_data > UB):
+        return specific_data - (UB - LB)
+    else: 
+        return specific_data 
+
 
 np.random.seed(2024)
 
@@ -31,15 +35,6 @@ def inRange(val, lower_bound, upper_bound):
     val = min(val, upper_bound - 1)
     return val
             
-def cyclic(r, b, x, y):
-    return
-    #if rI (b,x,y) < LB 
-        #return rI(b, x, y) + (UB - LB)
-    #elif rI(b,x,y) > UB
-        #return rI(b, x, y ) - (UB - LB)
-    #else 
-        #return rI(b,x,y)
-    #return
 
 def top_k_prediction_prob(pred, k):
     prob = nn.Softmax(dim=1)(pred)
@@ -60,7 +55,7 @@ def do_locsearchadv(I, p, r, d, t, k, R, model):
     
     iter = 0 
     I = rescale(I, MODEL_LB, MODEL_UB, LB, UB)
-    (_, _, x_dim, y_dim) = I.shape
+    (_, color_channel, x_dim, y_dim) = I.shape
     num_pixel = int(x_dim*y_dim*init_picked_percentage)
     
     ## Randomly pick pixels to start
@@ -78,9 +73,23 @@ def do_locsearchadv(I, p, r, d, t, k, R, model):
         sorted_scores = np.argsort(scores)
         P_XI, P_YI = P_X[sorted_scores][:t], P_Y[sorted_scores][:t]
         ## Generate perturb image I_hat
-        
+        #want to traverse px i and py i 
         ## Check if I_hat is an adversaria image
+        #need to copy the image 
+        I_hat = copy.deepdcopy(I) # copying the image
+        for i in range (t) : 
+            for j in range (color_channel):
+              I_hat[:, j, P_XI[i] ,P_YI[i]] = cyclic(I_hat, r, j, P_XI[i] ,P_YI[i]) 
+        #predict with I-hat
 
+        img_I_hat = rescale(I_hat, LB, UB, MODEL_LB, MODEL_UB)
+        pred_I_hat = model.predict(img_I_hat)
+        top_k_predicts, indexes = top_k_prediction_prob(pred_I_hat, k)
+        if(max_class in indexes):
+            return True
+        
+        #if (top_k_prediction_prob(I_hat))        
+            
         ## Update neighborhood of pixel location for next round
         P_X, P_Y = [], []
         
