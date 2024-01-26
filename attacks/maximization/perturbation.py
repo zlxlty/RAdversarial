@@ -14,7 +14,8 @@ def do_perturbation(input_tensor, label_idx, model, epsilon=2.0/255.0, num_itera
     opt= optim.SGD([delta], lr=1e-1)
     for t in range(num_iteration):
         pred = model.predict(input_tensor + delta)
-        loss = -nn.CrossEntropyLoss()(pred, torch.LongTensor([label_idx]))
+        label_tensor = torch.LongTensor([label_idx]).to(model.getDevice())
+        loss = -nn.CrossEntropyLoss()(pred, label_tensor)
         if t % 5 == 0:
             print(t, loss.item())
         opt.zero_grad()

@@ -1,5 +1,5 @@
 from classifiers import get_target_model
-from attacks import do_perturbation
+from attacks import do_perturbation, do_locsearchadv
 from PIL import Image
 import requests
 import torch
@@ -14,13 +14,15 @@ if __name__ == '__main__':
     # image = Image.open(requests.get(url, stream=True).raw)
     pig_img = Image.open("./images/pig.jpg") # opening a image 
     
-    target_model = get_target_model("MobileViT") #getting the target model
-    input_tensor = target_model.preprocess(pig_img) #opening our pig image 
+    device = "cuda:0" if torch.cuda.is_available() else "cpu"
     
-    torch.save(input_tensor, 'input_img.pt') #saving the image 
-    print(input_tensor)
+    target_model = get_target_model("MobileViT", device)
+    input_tensor = target_model.preprocess(pig_img)
     
-    # do_perturbation(input_tensor, 341, target_model)
+    # torch.save(input_tensor, 'input_img.pt')
+    # input_tensor = torch.load('input_img.pt')
+    # do_locsearchadv(input_tensor, 10, 1, 3, 5, 5, 1, target_model)
+    do_perturbation(input_tensor, 341, target_model)
     
     # logit = target_model.predict(input_tensor)
     # max_class = logit.max(dim=1)[1].item()
