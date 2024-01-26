@@ -90,7 +90,7 @@ def do_locsearchadv(I, p, r, d, t, k, R, model):
         indexes = top_k_prediction_prob(pred_I_hat, k)
         print(indexes)
         if(max_class not in indexes):
-            torch.save(img_I_hat, 'loc_img.pt')
+            torch.save(img_I_hat, "attacks/locsearchadv/loc_img.pt")
             return True
                     
         ## Update neighborhood of pixel location for next round

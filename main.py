@@ -21,7 +21,7 @@ if __name__ == '__main__':
     
     # torch.save(input_tensor, 'input_img.pt')
     # input_tensor = torch.load("attacks/locsearchadv/loc_img.pt")
-    do_locsearchadv(input_tensor, 20, 5, 5, 5, 5, 100, target_model)
+    do_locsearchadv(input_tensor, 2, 5, 5, 5, 5, 100, target_model)
     # do_perturbation(input_tensor, 341, target_model)
     
     # logit = target_model.predict(input_tensor)
