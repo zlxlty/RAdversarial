@@ -7,16 +7,16 @@ import torchvision.transforms as transforms
 init_picked_percentage = 0.1
 input = torch.load('input_img.pt') # input is an image  so we can 
 LB = 0 #This is just a guess for what the lower and upper bounds should be
-UP = 1  #This is just a guess for what the lower and upper bounds should be
+UB = 1  #This is just a guess for what the lower and upper bounds should be
 def cyclic(r, b, x, y): 
     """ r is the perturbation parameter"""
     
     specific_data = torch.img[:, b, x, y] # this is not called correctly
-    #sign = torch.sign((img[:, :, x, y]))
+    
     
     if(specific_data < LB):
       
-      return 
+      return torch.img[:, b, x, y] + (UB - LB)
 
     #if rI (b,x,y) < LB 
         #return rI(b, x, y) + (UB - LB)
