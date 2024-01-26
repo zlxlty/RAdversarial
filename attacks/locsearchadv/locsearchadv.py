@@ -15,13 +15,18 @@ np.random.seed(2024)
 def rescale(I, min, max, LB, UB):
     return (I - min) * (UB - LB) / (max - min) + LB
 
+def inRange(val, lower_bound, upper_bound):
+    val = max(lower_bound, val)
+    val = min(val, upper_bound - 1)
+    return val
+            
 def cyclic(r, b, x, y):
     return
 
 def top_k_prediction_prob(pred, k):
     prob = nn.Softmax(dim=1)(pred)
     val, ind = prob.sort(descending= True)
-    print(val[0][:k], ind[0][:k], sep="\n")
+    return val[0][:k], ind[0][:k]
 
 def pert(I, p, x, y):
     img = copy.deepcopy(I)
@@ -54,9 +59,22 @@ def do_locsearchadv(I, p, r, d, t, k, R, model):
             scores.append(score)
         sorted_scores = np.argsort(scores)
         P_XI, P_YI = P_X[sorted_scores][:t], P_Y[sorted_scores][:t]
+        ## Generate perturb image I_hat
         
+        ## Check if I_hat is an adversaria image
+
+        ## Update neighborhood of pixel location for next round
+        P_X, P_Y = [], []
+        
+        for i in range (t):
+            x, y = P_XI[i], P_YI[i]
+            for row in range(-d, d+1):
+                for col in range(-d, d+1):
+                    P_X.append[inRange(x + col, 0, x_dim)]
+                    P_Y.append[inRange(y + row, 0, y_dim)]
+            
         iter += 1
-    print(P_XI, P_YI, sep="\n")
+
     return False
 # input = rescale(input)
 
