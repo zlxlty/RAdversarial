@@ -76,7 +76,7 @@ def do_locsearchadv(I, p, r, d, t, k, R, model):
         #want to traverse px i and py i 
         ## Check if I_hat is an adversaria image
         #need to copy the image 
-        I_hat = copy.deepdcopy(I) # copying the image
+        I_hat = copy.deepcopy(I) # copying the image
         for i in range (t) : 
             for j in range (color_channel):
               I_hat[:, j, P_XI[i] ,P_YI[i]] = cyclic(I_hat, r, j, P_XI[i] ,P_YI[i]) 
