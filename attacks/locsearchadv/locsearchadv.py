@@ -5,11 +5,13 @@ import copy
 import torchvision.transforms as transforms
 
 init_picked_percentage = 0.1
-input = torch.load('input_img.pt') # input is an image  so we can 
+# input = torch.load('input_img.pt') # input is an image  so we can 
 LB = 0 #This is just a guess for what the lower and upper bounds should be
 UB = 1  #This is just a guess for what the lower and upper bounds should be
 MODEL_LB = 0
 MODEL_UB = 1
+
+# np.random.seed(2024)
 
 def cyclic(I, r, b, x, y): 
     """ r is the perturbation parameter"""
@@ -24,22 +26,18 @@ def cyclic(I, r, b, x, y):
     else: 
         return specific_data 
 
-
-np.random.seed(2024)
-
 def rescale(I, min, max, LB, UB):
     return (I - min) * (UB - LB) / (max - min) + LB
 
 def inRange(val, lower_bound, upper_bound):
     val = max(lower_bound, val)
     val = min(val, upper_bound - 1)
-    return val
-            
+    return val           
 
 def top_k_prediction_prob(pred, k):
     prob = nn.Softmax(dim=1)(pred)
-    val, ind = prob.sort(descending= True)
-    return val[0][:k], ind[0][:k]
+    _, ind = prob.sort(descending= True)
+    return ind[0][:k]
 
 def pert(I, p, x, y):
     img = copy.deepcopy(I)
@@ -57,14 +55,14 @@ def do_locsearchadv(I, p, r, d, t, k, R, model):
     I = rescale(I, MODEL_LB, MODEL_UB, LB, UB)
     (_, color_channel, x_dim, y_dim) = I.shape
     num_pixel = int(x_dim*y_dim*init_picked_percentage)
-    
     ## Randomly pick pixels to start
     P_X, P_Y = np.random.choice(range(x_dim), num_pixel), np.random.choice(range(y_dim), num_pixel)
     
     while iter < R:
+        print(iter)
         ## Compute function g
         scores = []
-        for i in range(num_pixel):    
+        for i in range(len(P_X)):    
             img = pert(I, p, P_X[i], P_Y[i])
             img = rescale(img, LB, UB, MODEL_LB, MODEL_UB)
             pred = model.predict(img)
@@ -84,22 +82,29 @@ def do_locsearchadv(I, p, r, d, t, k, R, model):
 
         img_I_hat = rescale(I_hat, LB, UB, MODEL_LB, MODEL_UB)
         pred_I_hat = model.predict(img_I_hat)
-        top_k_predicts, indexes = top_k_prediction_prob(pred_I_hat, k)
-        if(max_class in indexes):
-            return True
+
+        pred_max_class = pred_I_hat.max(dim=1)[1].item()
+        print("Predicted class: ", model.id2label(pred_max_class))
+        print("Predicted probability:", nn.Softmax(dim=1)(pred_I_hat)[0, pred_max_class].item())
         
-        #if (top_k_prediction_prob(I_hat))        
-            
+        indexes = top_k_prediction_prob(pred_I_hat, k)
+        print(indexes)
+        if(max_class not in indexes):
+            torch.save(img_I_hat, "attacks/locsearchadv/loc_img.pt")
+            return True
+                    
         ## Update neighborhood of pixel location for next round
         P_X, P_Y = [], []
         
+        ## Need optimization
         for i in range (t):
             x, y = P_XI[i], P_YI[i]
             for row in range(-d, d+1):
                 for col in range(-d, d+1):
-                    P_X.append[inRange(x + col, 0, x_dim)]
-                    P_Y.append[inRange(y + row, 0, y_dim)]
-            
+                    P_X.append(inRange(x + col, 0, x_dim))
+                    P_Y.append(inRange(y + row, 0, y_dim))
+        P_X = np.array(P_X)    
+        P_Y = np.array(P_Y)   
         iter += 1
 
     return False

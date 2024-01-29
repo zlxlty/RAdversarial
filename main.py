@@ -20,9 +20,9 @@ if __name__ == '__main__':
     input_tensor = target_model.preprocess(pig_img)
     
     # torch.save(input_tensor, 'input_img.pt')
-    # input_tensor = torch.load('input_img.pt')
-    # do_locsearchadv(input_tensor, 10, 1, 3, 5, 5, 1, target_model)
-    do_perturbation(input_tensor, 341, target_model)
+    # input_tensor = torch.load("attacks/locsearchadv/loc_img.pt")
+    do_locsearchadv(input_tensor, 2, 5, 5, 5, 5, 100, target_model)
+    # do_perturbation(input_tensor, 341, target_model)
     
     # logit = target_model.predict(input_tensor)
     # max_class = logit.max(dim=1)[1].item()
