@@ -17,17 +17,16 @@ def cyclic(I, r, b, x, y):
     """ r is the perturbation parameter"""
     
     specific_data = I[:, b, x, y] * r # this is not called correctly
-    
     if(specific_data < LB):
       return specific_data + (UB - LB)
-    
     elif(specific_data > UB):
         return specific_data - (UB - LB)
     else: 
         return specific_data 
 
 def rescale(I, min, max, LB, UB):
-    return (I - min) * (UB - LB) / (max - min) + LB
+    I_copy = copy.deepcopy(I)
+    return (I_copy - min) * (UB - LB) / (max - min) + LB
 
 def inRange(val, lower_bound, upper_bound):
     val = max(lower_bound, val)
@@ -58,23 +57,30 @@ def do_locsearchadv(I, p, r, d, t, k, R, model):
     ## Randomly pick pixels to start
     P_X, P_Y = np.random.choice(range(x_dim), num_pixel), np.random.choice(range(y_dim), num_pixel)
     
+    I_hat = copy.deepcopy(I) # copying the image
+    
     while iter < R:
         print(iter)
         ## Compute function g
         scores = []
         for i in range(len(P_X)):    
-            img = pert(I, p, P_X[i], P_Y[i])
+            img = pert(I_hat, p, P_X[i], P_Y[i])
             img = rescale(img, LB, UB, MODEL_LB, MODEL_UB)
             pred = model.predict(img)
             score = nn.Softmax(dim=1)(pred)[0, max_class].item()
             scores.append(score)
+        
         sorted_scores = np.argsort(scores)
-        P_XI, P_YI = P_X[sorted_scores][:t], P_Y[sorted_scores][:t]
+        scores.sort()
+        scores = scores[:t]
+        P_XI, P_YI = (P_X[sorted_scores])[:t], (P_Y[sorted_scores])[:t]
+        
+        print(sum(scores) / len(scores))
         ## Generate perturb image I_hat
         #want to traverse px i and py i 
         ## Check if I_hat is an adversaria image
         #need to copy the image 
-        I_hat = copy.deepcopy(I) # copying the image
+
         for i in range (t) : 
             for j in range (color_channel):
               I_hat[:, j, P_XI[i] ,P_YI[i]] = cyclic(I_hat, r, j, P_XI[i] ,P_YI[i]) 
@@ -90,6 +96,7 @@ def do_locsearchadv(I, p, r, d, t, k, R, model):
         indexes = top_k_prediction_prob(pred_I_hat, k)
         print(indexes)
         if(max_class not in indexes):
+            print(torch.max(img_I_hat), torch.min(img_I_hat))
             torch.save(img_I_hat, "attacks/locsearchadv/loc_img.pt")
             return True
                     
