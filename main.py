@@ -5,6 +5,9 @@ import requests
 import torch
 import torch.nn as nn
 
+from defines import IMAGE_PATH, EVAL_PATH
+
+
 # values are standard normalization for ImageNet images, 
 # from https://github.com/pytorch/examples/blob/master/imagenet/main.py
 def generate_image_data():
@@ -33,12 +36,12 @@ attack_methods = {
     #     "method": FGSMMethod
     # }
     "LocSearchAdv": {
-        "p": 8,
-        "r": 5, 
-        "d": 5, 
-        "t": 5, 
+        "p": 18.0,
+        "r": 1.5, 
+        "d": 10, 
+        "t": 10, 
         "k": 5, 
-        "R": 100,
+        "R": 150,
         "targeted": False,
         "method": LocSearchAdv
     }
@@ -52,12 +55,12 @@ if __name__ == '__main__':
     
     device = "cuda:0" if torch.cuda.is_available() else "cpu"
     
-    target_model = get_target_model("MobileViT", device)
+    target_model = get_target_model("ResNet50", device)
     input_tensor = target_model.preprocess(pig_img)
     
     # torch.save(input_tensor, 'input_img.pt')
     # input_tensor = torch.load("attacks/locsearchadv/loc_img.pt")
-    do_locsearchadv(input_tensor, 8, 1.8, 5, 5, 5, 150, target_model)
+    # do_locsearchadv(input_tensor, 8, 1.8, 5, 5, 5, 150, target_model)
     # do_perturbation(input_tensor, 341, target_model)
     
     for method_name in attack_methods:
@@ -67,10 +70,11 @@ if __name__ == '__main__':
             input_tensor = target_model.preprocess(original_image)
             # .do_perturbation(input_tensor, true_label_idx, attack["epsilon"], attack["num_iter"])\
             attack["method"](target_model)\
-                .do_perturbation(input_tensor, true_label_idx, attack["p"], attack["r"], attack["d"],attack["t"], attack["k"], attack["R"])\
-                .do_eval(true_label_idx)\
-                .save_perturbation_to_png(f"{IMAGE_PATH}/perturbed_{image_name[:-4]}.png")\
-                .save_eval_to_json(image_name, true_label_idx, f"{EVAL_PATH}/{method_name}.json")
+                .do_perturbation(input_tensor, true_label_idx, attack["p"], attack["r"], attack["d"], attack["t"], attack["k"], attack["R"])
+                # .do_perturbation(input_tensor, true_label_idx, attack["epsilon"], attack["num_iter"])\
+                # .do_eval(true_label_idx)\
+                # .save_perturbation_to_png(f"{IMAGE_PATH}/perturbed_{image_name[:-4]}.png")\
+                # .save_eval_to_json(image_name, true_label_idx, f"{EVAL_PATH}/{method_name}.json")
             
     # logit = target_model.predict(input_tensor)
     # max_class = logit.max(dim=1)[1].item()

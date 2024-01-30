@@ -8,7 +8,7 @@ from .. import AttackMethod
 
 init_picked_percentage = 0.1
 # input = torch.load('input_img.pt') # input is an image  so we can 
-LB = 0 #This is just a guess for what the lower and upper bounds should be
+LB = -1 #This is just a guess for what the lower and upper bounds should be
 UB = 1  #This is just a guess for what the lower and upper bounds should be
 MODEL_LB = 0
 MODEL_UB = 1
@@ -30,9 +30,7 @@ class LocSearchAdv(AttackMethod):
         return (I_copy - min) * (UB - LB) / (max - min) + LB
 
     def inRange(self, val, lower_bound, upper_bound):
-        val = max(lower_bound, val)
-        val = min(val, upper_bound - 1)
-        return val           
+        return lower_bound <= val < upper_bound        
 
     def top_k_prediction_prob(self, pred, k):
         prob = nn.Softmax(dim=1)(pred)
@@ -46,7 +44,9 @@ class LocSearchAdv(AttackMethod):
         return img
 
     ## I should be a (batch, color, x_dim, y_dim) tensor
-    def do_perturbation(self, input_tensor, true_label_idx, p, r, d, t, k, R):      
+    def do_perturbation(self, input_tensor, true_label_idx, p, r, d, t, k, R):    
+        MODEL_LB = torch.min(input_tensor)
+        MODEL_UB = torch.max(input_tensor)
         iter = 0 
         I = self.rescale(input_tensor, MODEL_LB, MODEL_UB, LB, UB)
         (_, color_channel, x_dim, y_dim) = I.shape
@@ -93,8 +93,9 @@ class LocSearchAdv(AttackMethod):
             indexes = self.top_k_prediction_prob(pred_I_hat, k)
             print(indexes)
             if(true_label_idx not in indexes):
+                print(torch.max(img_I_hat), torch.min(img_I_hat))
                 return self
-                        
+            
             ## Update neighborhood of pixel location for next round
             P_X, P_Y = [], []
             
@@ -103,26 +104,13 @@ class LocSearchAdv(AttackMethod):
                 x, y = P_XI[i], P_YI[i]
                 for row in range(-d, d+1):
                     for col in range(-d, d+1):
-                        P_X.append(self.inRange(x + col, 0, x_dim))
-                        P_Y.append(self.inRange(y + row, 0, y_dim))
+                        new_x = x + col
+                        new_y = y + row
+                        if (self.inRange(new_x, 0, x_dim) and self.inRange(new_y, 0, y_dim)):
+                            P_X.append(new_x)
+                            P_Y.append(new_y)
             P_X = np.array(P_X)    
             P_Y = np.array(P_Y)   
             iter += 1
 
         return False
-# input = rescale(input)
-
-# (_, color_channel, x_dim, y_dim) = input.shape
-
-# input = torch.load('input_img.pt') #loading in an image 
-
-# print(P_X, P_Y, sep="\n")
-
-# for (x, y) in (P_X, P_Y):
-#     print(x, y)
-
-# # print(no_batch[0])
-# print(input[:, :, 0, 0])
-# i = pert(input, 2, 0, 0)
-# print(i[:, :, 0, 0])
-# # print(input[:, :, 0, 0])
