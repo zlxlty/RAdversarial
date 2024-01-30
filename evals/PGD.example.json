@@ -1,0 +1,1 @@
+[{"input_name": "pig.jpg", "true_label_idx": 341, "topk_indices": [452, 824, 434, 501, 658], "topk_labels": ["bonnet, poke bonnet", "stole", "bath towel", "cloak", "mitten"], "topk_probabilities": [1.0, 3.099758628031087e-16, 2.264667786541888e-16, 8.369120946746935e-17, 1.6619992454462475e-17]}]
