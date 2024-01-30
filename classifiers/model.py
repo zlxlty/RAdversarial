@@ -1,8 +1,9 @@
-from transformers import MobileViTImageProcessor, MobileViTForImageClassification
+from transformers import MobileViTImageProcessor, MobileViTForImageClassification, AutoImageProcessor, ResNetForImageClassification
 from PIL import Image
 import torch
 import torch.optim as optim
 import requests
+from torchvision import transforms
 from typing import *
 
 class TargetModel():
@@ -50,11 +51,38 @@ class MobileViTModel(TargetModel):
         # print(result_distribution[0][predicted_class_idx])
         # return self.model.config.id2label[predicted_class_idx]
 
+## https://huggingface.co/microsoft/resnet-50
+class ResNet50(TargetModel):
+    def __init__(self, device: str):
+        self.model = ResNetForImageClassification.from_pretrained("microsoft/resnet-50").to(device)
+        self.processor = AutoImageProcessor.from_pretrained("microsoft/resnet-50")
+        self.device = device
+
+    
+    def preprocess(self, image: Image.Image) -> torch.Tensor:
+        inputs = self.processor(image, return_tensors="pt")["pixel_values"]
+        return inputs.to(self.device)
+    
+    def id2label(self, id: int) -> str:
+        return self.model.config.id2label[id]
+
+    def getDevice(self) -> str:
+        return self.device
+    
+    def predict(self, inputs: torch.Tensor) -> Dict[str, Any]:
+        logits = self.model(pixel_values=(inputs)).logits
+        
+        return logits
+    
     
     
 def get_target_model(model_name: str, device: str) -> TargetModel:
     if model_name == "MobileViT":
         model = MobileViTModel(device)
+        model.model.eval()
+        return model
+    elif model_name == "ResNet50":
+        model = ResNet50(device)
         model.model.eval()
         return model
     else:
