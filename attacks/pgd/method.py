@@ -24,8 +24,8 @@ class PGDMethod(AttackMethod):
             delta.data.clamp_(-epsilon, epsilon)
         
         
-        self.perturbed_input = torch.clamp(input_tensor + delta, 0, 1)
-        self.logit = self.model.predict(perturbed_input)
+        self.perturbed_input = torch.clamp(input_tensor + delta, 0, 1).detach()
+        self.logit = self.model.predict(perturbed_input).detach()
         
         return self
         
