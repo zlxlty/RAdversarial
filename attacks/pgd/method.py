@@ -5,9 +5,14 @@ import torch.nn as nn
 from .. import AttackMethod
 
 class PGDMethod(AttackMethod):
-    def do_perturbation(self, input_tensor, true_label_idx, epsilon=5.0/255.0, num_iteration = 30) -> AttackMethod:
-        delta = torch.zeros_like(input_tensor, requires_grad=True)
+    def do_perturbation(self, input_tensor, true_label_idx) -> AttackMethod:
+        ## Get attack config
+        epsilon = self.param_config["epsilon"][0] /  self.param_config["epsilon"][1]
+        num_iteration = self.param_config["num_iter"]
+        targeted = self.param_config["targeted"]
         
+        delta = torch.zeros_like(input_tensor, requires_grad=True)
+
         opt= optim.SGD([delta], lr=1e-1)
         for t in range(num_iteration):
             # normalize

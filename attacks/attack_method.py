@@ -5,14 +5,21 @@ import torch.nn as nn
 
 import os
 import sys
+
+import yaml
 sys.path.append("..")
 from classifiers import TargetModel
 
 class AttackMethod():
-    def __init__(self, model: TargetModel):
+    def __init__(self, model: TargetModel, config_file: str):
         self.model = model
         self.perturbated_input = None
         self.logit = None
+        
+        with open(config_file, 'r') as file:
+            data = yaml.safe_load(file)
+        self.param_config = data
+            
 
     def do_perturbation(self, input_tensor: torch.Tensor, label: int) -> 'AttackMethod':
         '''
