@@ -25,7 +25,7 @@ class MobileViTModel(TargetModel):
         self.device = device
         
     def preprocess(self, image: Image.Image) -> torch.Tensor:
-        inputs = self.image_processor.preprocess(images=image, return_tensors="pt", do_normalize=True, image_mean=[0,0,0], image_std=[1,1,1])["pixel_values"]
+        inputs = self.image_processor.preprocess(images=image, return_tensors="pt")["pixel_values"]
         return inputs.to(self.device)
     
     def id2label(self, id: int) -> str:

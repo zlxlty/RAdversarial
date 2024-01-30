@@ -1,1 +1,1 @@
-from .model import get_target_model, MobileViTModel
+from .model import get_target_model, MobileViTModel, TargetModel
