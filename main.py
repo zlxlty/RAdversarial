@@ -1,5 +1,5 @@
 from classifiers import get_target_model
-from attacks import PGDMethod
+from attacks import PGDMethod, LocSearchAdv
 from PIL import Image
 import requests
 import torch
@@ -23,18 +23,28 @@ def generate_image_data():
 
 FGSMMethod = None
 attack_methods = {
-    "PGD": {
-        "epsilon": 5./255.,
-        "num_iter": 40,
-        "targeted": False,
-        "method": PGDMethod
-    },
+    # "PGD": {
+    #     "epsilon": 5./255.,
+    #     "num_iter": 40,
+    #     "targeted": False,
+    #     "method": PGDMethod
+    # },
     # "FGSM": {
     #     "epsilon": 5./255.,
     #     "num_iter": 1,
     #     "targeted": False,
     #     "method": FGSMMethod
     # }
+    "LocSearchAdv": {
+        "p": 8,
+        "r": 5, 
+        "d": 5, 
+        "t": 5, 
+        "k": 5, 
+        "R": 100,
+        "targeted": False,
+        "method": LocSearchAdv
+    }
 }
 
 if __name__ == '__main__':
@@ -46,9 +56,9 @@ if __name__ == '__main__':
         image_data_generator = generate_image_data()
         for image_name, original_image, true_label_idx in image_data_generator:
             input_tensor = target_model.preprocess(original_image)
-            
+            # .do_perturbation(input_tensor, true_label_idx, attack["epsilon"], attack["num_iter"])\
             attack["method"](target_model)\
-                .do_perturbation(input_tensor, true_label_idx, attack["epsilon"], attack["num_iter"])\
+                .do_perturbation(input_tensor, true_label_idx, attack["p"], attack["r"], attack["d"],attack["t"], attack["k"], attack["R"])\
                 .do_eval(true_label_idx)\
                 .save_perturbation_to_png(f"{IMAGE_PATH}/perturbed_{image_name[:-4]}.png")\
                 .save_eval_to_json(image_name, true_label_idx, f"{EVAL_PATH}/{method_name}.json")
