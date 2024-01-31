@@ -34,7 +34,8 @@ class LocSearchAdv(AttackMethod):
 
     def top_k_prediction_prob(self, pred, k):
         prob = nn.Softmax(dim=1)(pred)
-        _, ind = prob.sort(descending= True)
+        top, ind = prob.sort(descending= True)
+        print(top[0][0])
         return ind[0][:k]
 
     def pert(self, I, p, x, y):
@@ -94,15 +95,10 @@ class LocSearchAdv(AttackMethod):
             #predict with I-hat
 
             img_I_hat = self.rescale(I_hat, self.LB, self.UB, MODEL_LB, MODEL_UB)
-            img_I_hat = torch.clamp(img_I_hat, 0, 1).detach()
             pred_I_hat = self.model.predict(img_I_hat)
             
             self.logit = pred_I_hat
             self.perturbed_input = img_I_hat
-
-            pred_max_class = pred_I_hat.max(dim=1)[1].item()
-            print("Predicted class: ", self.model.id2label(pred_max_class))
-            print("Predicted probability:", nn.Softmax(dim=1)(pred_I_hat)[0, pred_max_class].item())
             
             indexes = self.top_k_prediction_prob(pred_I_hat, k)
             print(indexes)
