@@ -23,12 +23,10 @@ def generate_image_data():
 
 FGSMMethod = None
 attack_methods = {
-    # "PGD": {
-    #     "epsilon": 5./255.,
-    #     "num_iter": 40,
-    #     "targeted": False,
-    #     "method": PGDMethod
-    # },
+    "PGD": {
+        "config": "attacks/config/pgd.yaml",
+        "method": PGDMethod
+    },
     # "FGSM": {
     #     "epsilon": 5./255.,
     #     "num_iter": 1,
@@ -65,16 +63,16 @@ if __name__ == '__main__':
     
     for method_name in attack_methods:
         attack = attack_methods[method_name]
+        config_path = attack["config"]
         image_data_generator = generate_image_data()
         for image_name, original_image, true_label_idx in image_data_generator:
             input_tensor = target_model.preprocess(original_image)
-            # .do_perturbation(input_tensor, true_label_idx, attack["epsilon"], attack["num_iter"])\
-            attack["method"](target_model)\
-                .do_perturbation(input_tensor, true_label_idx, attack["p"], attack["r"], attack["d"], attack["t"], attack["k"], attack["R"])
-                # .do_perturbation(input_tensor, true_label_idx, attack["epsilon"], attack["num_iter"])\
-                # .do_eval(true_label_idx)\
-                # .save_perturbation_to_png(f"{IMAGE_PATH}/perturbed_{image_name[:-4]}.png")\
-                # .save_eval_to_json(image_name, true_label_idx, f"{EVAL_PATH}/{method_name}.json")
+            
+            attack["method"](target_model, config_path)\
+                .do_perturbation(input_tensor, true_label_idx)\
+                .do_eval(true_label_idx)\
+                .save_perturbation_to_png(f"{IMAGE_PATH}/{method_name}/perturbed_{image_name[:-4]}.png")\
+                .save_eval_to_json(image_name, true_label_idx, f"{EVAL_PATH}/{method_name}/{method_name}_exp.json")
             
     # logit = target_model.predict(input_tensor)
     # max_class = logit.max(dim=1)[1].item()
