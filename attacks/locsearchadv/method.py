@@ -6,22 +6,22 @@ import torchvision.transforms as transforms
 
 from .. import AttackMethod
 
-init_picked_percentage = 0.1
-# input = torch.load('input_img.pt') # input is an image  so we can 
-LB = -1 #This is just a guess for what the lower and upper bounds should be
-UB = 1  #This is just a guess for what the lower and upper bounds should be
-MODEL_LB = 0
-MODEL_UB = 1
-    
+
+## Adaptive p
 class LocSearchAdv(AttackMethod):
+
+    init_picked_percentage = 0.1
+    LB = -1 #This is just a guess for what the lower and upper bounds should be
+    UB = 1  #This is just a guess for what the lower and upper bounds should be
+
     def cyclic(self, I, r, b, x, y): 
         """ r is the perturbation parameter"""
         
         specific_data = I[:, b, x, y] * r # this is not called correctly
-        if(specific_data < LB):
-            return specific_data + (UB - LB)
-        elif(specific_data > UB):
-            return specific_data - (UB - LB)
+        if(specific_data < self.LB):
+            return specific_data + (self.UB - self.LB)
+        elif(specific_data > self.UB):
+            return specific_data - (self.UB - self.LB)
         else: 
             return specific_data 
 
@@ -44,25 +44,35 @@ class LocSearchAdv(AttackMethod):
         return img
 
     ## I should be a (batch, color, x_dim, y_dim) tensor
-    def do_perturbation(self, input_tensor, true_label_idx, p, r, d, t, k, R):    
+    def do_perturbation(self, input_tensor, true_label_idx):
+        ## Get hyperparam
+        p = self.param_config["p"]
+        r = self.param_config["r"]
+        d = self.param_config["d"]
+        t = self.param_config["t"]
+        k = self.param_config["k"]
+        R = self.param_config["R"]
+        self.init_picked_percentage = self.param_config["init_percentage"]
+        self.LB = self.param_config["LB"]
+        self.UB = self.param_config["UB"]
+        
         MODEL_LB = torch.min(input_tensor)
         MODEL_UB = torch.max(input_tensor)
-        iter = 0 
-        I = self.rescale(input_tensor, MODEL_LB, MODEL_UB, LB, UB)
+        I = self.rescale(input_tensor, MODEL_LB, MODEL_UB, self.LB, self.UB)
         (_, color_channel, x_dim, y_dim) = I.shape
-        num_pixel = int(x_dim*y_dim*init_picked_percentage)
+        num_pixel = int(x_dim*y_dim*self.init_picked_percentage)
         ## Randomly pick pixels to start
         P_X, P_Y = np.random.choice(range(x_dim), num_pixel), np.random.choice(range(y_dim), num_pixel)
         
         I_hat = copy.deepcopy(I) # copying the image
         
-        while iter < R:
+        for iter in range (R):
             print(iter)
             ## Compute function g
             scores = []
             for i in range(len(P_X)):    
                 img = self.pert(I_hat, p, P_X[i], P_Y[i])
-                img = self.rescale(img, LB, UB, MODEL_LB, MODEL_UB)
+                img = self.rescale(img, self.LB, self.UB, MODEL_LB, MODEL_UB)
                 pred = self.model.predict(img)
                 score = nn.Softmax(dim=1)(pred)[0, true_label_idx].item()
                 scores.append(score)
@@ -83,8 +93,12 @@ class LocSearchAdv(AttackMethod):
                     I_hat[:, j, P_XI[i] ,P_YI[i]] = self.cyclic(I_hat, r, j, P_XI[i] ,P_YI[i]) 
             #predict with I-hat
 
-            img_I_hat = self.rescale(I_hat, LB, UB, MODEL_LB, MODEL_UB)
+            img_I_hat = self.rescale(I_hat, self.LB, self.UB, MODEL_LB, MODEL_UB)
+            img_I_hat = torch.clamp(img_I_hat, 0, 1).detach()
             pred_I_hat = self.model.predict(img_I_hat)
+            
+            self.logit = pred_I_hat
+            self.perturbed_input = img_I_hat
 
             pred_max_class = pred_I_hat.max(dim=1)[1].item()
             print("Predicted class: ", self.model.id2label(pred_max_class))
@@ -93,7 +107,6 @@ class LocSearchAdv(AttackMethod):
             indexes = self.top_k_prediction_prob(pred_I_hat, k)
             print(indexes)
             if(true_label_idx not in indexes):
-                print(torch.max(img_I_hat), torch.min(img_I_hat))
                 return self
             
             ## Update neighborhood of pixel location for next round
@@ -111,6 +124,6 @@ class LocSearchAdv(AttackMethod):
                             P_Y.append(new_y)
             P_X = np.array(P_X)    
             P_Y = np.array(P_Y)   
-            iter += 1
 
-        return False
+        
+        return self

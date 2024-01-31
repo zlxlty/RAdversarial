@@ -1,0 +1,11 @@
+---
+LB: -1
+UB: 1
+init_percentage: 0.1
+p: 10
+r: 1.8
+d: 5
+t: 5
+k: 5
+R: 50
+targeted: False

@@ -19,8 +19,7 @@ class LocSearchAdv(AttackMethod):
 
     """
 
-    def do_perturbation(self,input_tensor, true_label_idx,
-                 r=1.7, p=20., d=5, t=5, R=150):
+    def do_perturbation(self,input_tensor, true_label_idx):
 
         """A black-box attack based on the idea of greedy local search.
 
@@ -54,6 +53,13 @@ class LocSearchAdv(AttackMethod):
 
         a = input_tensor
         del input_tensor
+        
+        p = self.param_config["p"]
+        r = self.param_config["r"]
+        d = self.param_config["d"]
+        t = self.param_config["t"]
+        k = self.param_config["k"]
+        R = self.param_config["R"]
 
         # TODO: incorporate the modifications mentioned in the manuscript
         # under "Implementing Algorithm LocSearchAdv"
