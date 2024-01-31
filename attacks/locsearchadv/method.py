@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 import numpy as np
 import copy
 import torchvision.transforms as transforms
@@ -7,7 +8,6 @@ import torchvision.transforms as transforms
 from .. import AttackMethod
 
 
-## Adaptive p
 class LocSearchAdv(AttackMethod):
 
     init_picked_percentage = 0.1
@@ -53,6 +53,8 @@ class LocSearchAdv(AttackMethod):
         t = self.param_config["t"]
         k = self.param_config["k"]
         R = self.param_config["R"]
+        grid_size = self.param_config["grid_size"]
+        
         self.init_picked_percentage = self.param_config["init_percentage"]
         self.LB = self.param_config["LB"]
         self.UB = self.param_config["UB"]
@@ -61,6 +63,21 @@ class LocSearchAdv(AttackMethod):
         MODEL_UB = torch.max(input_tensor)
         I = self.rescale(input_tensor, MODEL_LB, MODEL_UB, self.LB, self.UB)
         (_, color_channel, x_dim, y_dim) = I.shape
+        
+        ## For padding
+        assert x_dim == y_dim
+        
+        padding_val = x_dim % grid_size
+        test =  copy.deepcopy(I)
+        ## Add padding to the image
+        padded_image = F.pad(I, (padding_val, padding_val, padding_val, padding_val), mode='constant', value=0)
+        print("Original Image Shape:", input_tensor.shape)
+        print("Padded Image Shape:", padded_image.shape)
+        ## Remove padding
+        revert_input = padded_image[:, :, padding_val: -padding_val , padding_val: -padding_val]
+        print("org Image Shape:", revert_input.shape)
+        print(torch.equal(revert_input, test))
+        
         num_pixel = int(x_dim*y_dim*self.init_picked_percentage)
         ## Randomly pick pixels to start
         P_X, P_Y = np.random.choice(range(x_dim), num_pixel), np.random.choice(range(y_dim), num_pixel)
