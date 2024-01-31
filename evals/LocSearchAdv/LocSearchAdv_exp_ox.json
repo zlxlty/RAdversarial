@@ -1,0 +1,1 @@
+[{"input_name": "ox.jpg", "true_label_idx": 345, "true_class_probability": 0.9427090883255005, "topk_indices": [345, 690, 339, 246, 210], "topk_labels": ["ox", "oxcart", "sorrel", "Great Dane", "German short-haired pointer"], "topk_probabilities": [0.9427090883255005, 0.009102854877710342, 0.007252042647451162, 0.003762241918593645, 0.0015367259038612247]}]

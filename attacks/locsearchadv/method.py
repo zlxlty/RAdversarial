@@ -45,7 +45,7 @@ class LocSearchAdv(AttackMethod):
         return img
 
     ## I should be a (batch, color, x_dim, y_dim) tensor
-    def do_perturbation(self, input_tensor, true_label_idx):
+    def do_perturbation(self, input_tensor, true_label_idx) -> AttackMethod:
         ## Get hyperparam
         p = self.param_config["p"]
         r = self.param_config["r"]
