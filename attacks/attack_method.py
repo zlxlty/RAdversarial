@@ -7,6 +7,7 @@ import os
 import sys
 
 import yaml
+import json
 sys.path.append("..")
 from classifiers import TargetModel
 
@@ -64,8 +65,6 @@ class AttackMethod():
         
         if filename[-5:] != ".json":
             raise Exception("Filename must end with .json")
-        
-        import json
         
         json_dict = {
             "input_name": input_name,

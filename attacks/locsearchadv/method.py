@@ -17,7 +17,7 @@ class LocSearchAdv(AttackMethod):
     def cyclic(self, I, r, b, x, y): 
         """ r is the perturbation parameter"""
         
-        specific_data = I[:, b, x, y] * r # this is not called correctly
+        specific_data = I[:, b, x, y] * r
         if(specific_data < self.LB):
             return specific_data + (self.UB - self.LB)
         elif(specific_data > self.UB):
@@ -35,16 +35,21 @@ class LocSearchAdv(AttackMethod):
     def top_k_prediction_prob(self, pred, k):
         prob = nn.Softmax(dim=1)(pred)
         top, ind = prob.sort(descending= True)
-        print(top[0][0])
+        print("Top pred prob: {}".format(top[0][0].item()))
         return ind[0][:k]
 
-    def pert(self, I, p, x, y):
+    def pert(self, I, p, x, y, grid_size):
         img = copy.deepcopy(I)
-        sign = torch.sign((img[:, :, x, y]))
-        img[:, :, x, y] = p * sign
+        
+        start_x = x * grid_size
+        start_y = y * grid_size
+        pts_to_pert = [(start_x+i,start_y+j) for i in range (grid_size) for j in range (grid_size)]
+        
+        for x, y in pts_to_pert:
+            sign = torch.sign((img[:, :, x, y]))
+            img[:, :, x, y] = p * sign
         return img
 
-    ## I should be a (batch, color, x_dim, y_dim) tensor
     def do_perturbation(self, input_tensor, true_label_idx) -> AttackMethod:
         ## Get hyperparam
         p = self.param_config["p"]
@@ -68,29 +73,28 @@ class LocSearchAdv(AttackMethod):
         assert x_dim == y_dim
         
         padding_val = x_dim % grid_size
-        test =  copy.deepcopy(I)
         ## Add padding to the image
         padded_image = F.pad(I, (padding_val, padding_val, padding_val, padding_val), mode='constant', value=0)
-        print("Original Image Shape:", input_tensor.shape)
-        print("Padded Image Shape:", padded_image.shape)
-        ## Remove padding
-        revert_input = padded_image[:, :, padding_val: -padding_val , padding_val: -padding_val]
-        print("org Image Shape:", revert_input.shape)
-        print(torch.equal(revert_input, test))
         
-        num_pixel = int(x_dim*y_dim*self.init_picked_percentage)
+        grid_dim = int((x_dim + 2 * padding_val) / grid_size)
+        num_pixel = int(grid_dim*grid_dim*self.init_picked_percentage)
+        
+        print("Grid size: {}".format(grid_dim))
+        
         ## Randomly pick pixels to start
-        P_X, P_Y = np.random.choice(range(x_dim), num_pixel), np.random.choice(range(y_dim), num_pixel)
-        
-        I_hat = copy.deepcopy(I) # copying the image
+        P_X, P_Y = np.random.choice(range(grid_dim), num_pixel), np.random.choice(range(grid_dim), num_pixel)
+        # copying the image
+        I_hat = copy.deepcopy(padded_image)
         
         for iter in range (R):
             print(iter)
             ## Compute function g
             scores = []
             for i in range(len(P_X)):    
-                img = self.pert(I_hat, p, P_X[i], P_Y[i])
+                img = self.pert(I_hat, p, P_X[i], P_Y[i], grid_size)
                 img = self.rescale(img, self.LB, self.UB, MODEL_LB, MODEL_UB)
+                img = img[:, :, padding_val: -padding_val , padding_val: -padding_val]
+
                 pred = self.model.predict(img)
                 score = nn.Softmax(dim=1)(pred)[0, true_label_idx].item()
                 scores.append(score)
@@ -99,19 +103,26 @@ class LocSearchAdv(AttackMethod):
             scores.sort()
             scores = scores[:t]
             P_XI, P_YI = (P_X[sorted_scores])[:t], (P_Y[sorted_scores])[:t]
+            avg = sum(scores) / len(scores)
             
-            print(sum(scores) / len(scores))
-            ## Generate perturb image I_hat
-            #want to traverse px i and py i 
-            ## Check if I_hat is an adversaria image
-            #need to copy the image 
-
-            for i in range (t) : 
-                for j in range (color_channel):
-                    I_hat[:, j, P_XI[i] ,P_YI[i]] = self.cyclic(I_hat, r, j, P_XI[i] ,P_YI[i]) 
-            #predict with I-hat
+            if avg >= 0.5:
+                p *= 1.1
+            elif avg <= 0.01:
+                p *= 0.9
+            
+            print(avg, p, sep= "   ")
+            
+            for i in range (t): 
+                start_x = P_XI[i] * grid_size
+                start_y = P_YI[i] * grid_size
+                pts_to_pert = [(start_x+i,start_y+j) for i in range (grid_size) for j in range (grid_size)]
+                
+                for x, y in pts_to_pert:
+                    for j in range (color_channel):
+                        I_hat[:, j, x, y] = self.cyclic(I_hat, r, j, x, y) 
 
             img_I_hat = self.rescale(I_hat, self.LB, self.UB, MODEL_LB, MODEL_UB)
+            img_I_hat = img_I_hat[:, :, padding_val: -padding_val , padding_val: -padding_val]
             pred_I_hat = self.model.predict(img_I_hat)
             
             self.logit = pred_I_hat
@@ -125,14 +136,13 @@ class LocSearchAdv(AttackMethod):
             ## Update neighborhood of pixel location for next round
             P_X, P_Y = [], []
             
-            ## Need optimization
             for i in range (t):
                 x, y = P_XI[i], P_YI[i]
                 for row in range(-d, d+1):
                     for col in range(-d, d+1):
                         new_x = x + col
                         new_y = y + row
-                        if (self.inRange(new_x, 0, x_dim) and self.inRange(new_y, 0, y_dim)):
+                        if (self.inRange(new_x, 0, grid_dim) and self.inRange(new_y, 0, grid_dim)):
                             P_X.append(new_x)
                             P_Y.append(new_y)
             P_X = np.array(P_X)    
