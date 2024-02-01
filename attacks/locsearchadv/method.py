@@ -107,7 +107,7 @@ class LocSearchAdv(AttackMethod):
             
             if avg >= 0.5:
                 p *= 1.1
-            elif avg <= 0.01:
+            elif avg <= 0.1:
                 p *= 0.9
             
             print(avg, p, sep= "   ")
