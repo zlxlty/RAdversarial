@@ -1,1 +1,36 @@
-[{"input_name": "test.jpg", "true_label_idx": 282, "true_class_probability": 0.020833296701312065, "topk_indices": [673, 761, 281, 282, 622], "topk_labels": ["mouse, computer mouse", "remote control, remote", "tabby, tabby cat", "tiger cat", "lens cap, lens cover"], "topk_probabilities": [0.5715446472167969, 0.1620790958404541, 0.023766441270709038, 0.020833296701312065, 0.019568918272852898]}, {"input_name": "cat.jpg", "true_label_idx": 281, "true_class_probability": 0.5138897895812988, "topk_indices": [281, 282, 285, 620, 700], "topk_labels": ["tabby, tabby cat", "tiger cat", "Egyptian cat", "laptop, laptop computer", "paper towel"], "topk_probabilities": [0.5138897895812988, 0.289253294467926, 0.10210083425045013, 0.0031525692902505398, 0.002188724698498845]}]
+[
+  {
+    "input_name": "test.jpg",
+    "true_label_idx": 282,
+    "true_class_probability": 0.020833296701312065,
+    "topk_indices": [673, 761, 281, 282, 622],
+    "topk_labels": [
+      "mouse, computer mouse",
+      "remote control, remote",
+      "tabby, tabby cat",
+      "tiger cat",
+      "lens cap, lens cover"
+    ],
+    "topk_probabilities": [
+      0.5715446472167969, 0.1620790958404541, 0.023766441270709038,
+      0.020833296701312065, 0.019568918272852898
+    ]
+  },
+  {
+    "input_name": "cat.jpg",
+    "true_label_idx": 281,
+    "true_class_probability": 0.5138897895812988,
+    "topk_indices": [281, 282, 285, 620, 700],
+    "topk_labels": [
+      "tabby, tabby cat",
+      "tiger cat",
+      "Egyptian cat",
+      "laptop, laptop computer",
+      "paper towel"
+    ],
+    "topk_probabilities": [
+      0.5138897895812988, 0.289253294467926, 0.10210083425045013,
+      0.0031525692902505398, 0.002188724698498845
+    ]
+  }
+]

@@ -20,9 +20,9 @@ def generate_image_data():
     '''
     url = "http://images.cocodataset.org/val2017/000000039769.jpg"
     # This is a fake image getter for testing
-    yield "pig.jpg", Image.open(f"{IMAGE_PATH}/pig.jpg"), 341
-    yield "cat.jpg", Image.open(requests.get(url, stream=True).raw), 282
-    yield "milo.jpg",  Image.open(f"{IMAGE_PATH}/milo.jpg"), 281
+    # yield "pig.jpg", Image.open(f"{IMAGE_PATH}/pig.jpg"), 341
+    # yield "cat.jpg", Image.open(requests.get(url, stream=True).raw), 282
+    # yield "milo.jpg",  Image.open(f"{IMAGE_PATH}/milo.jpg"), 281
     yield "ox.jpg", Image.open(f"{IMAGE_PATH}/ox.jpg"), 345
 
 def create_dir(dir):

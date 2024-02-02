@@ -4,6 +4,7 @@ import torch.nn.functional as F
 import numpy as np
 import copy
 import torchvision.transforms as transforms
+import math
 
 from .. import AttackMethod
 
@@ -38,17 +39,26 @@ class LocSearchAdv(AttackMethod):
         print("Top pred prob: {}".format(top[0][0].item()))
         return ind[0][:k]
 
-    def pert(self, I, p, x, y, grid_size):
+    def pert(self, I, p, pts_to_pert):
         img = copy.deepcopy(I)
-        
-        start_x = x * grid_size
-        start_y = y * grid_size
-        pts_to_pert = [(start_x+i,start_y+j) for i in range (grid_size) for j in range (grid_size)]
-        
         for x, y in pts_to_pert:
             sign = torch.sign((img[:, :, x, y]))
             img[:, :, x, y] = p * sign
         return img
+    
+    def get_pic_coordinates(self, grid_x, grid_y, grid_size, x_dim, y_dim):
+        start_x = grid_x * grid_size
+        start_y = grid_y * grid_size
+        org_pts = [
+            (start_x+i,start_y+j) 
+            for i in range (grid_size) 
+            for j in range (grid_size)
+        ]
+        
+        org_pts = [ 
+            (x, y) for x, y in org_pts if 0 <= x < x_dim and 0 <= y < y_dim
+        ]
+        return org_pts
 
     def do_perturbation(self, input_tensor, true_label_idx) -> AttackMethod:
         ## Get hyperparam
@@ -69,14 +79,7 @@ class LocSearchAdv(AttackMethod):
         I = self.rescale(input_tensor, MODEL_LB, MODEL_UB, self.LB, self.UB)
         (_, color_channel, x_dim, y_dim) = I.shape
         
-        ## For padding
-        assert x_dim == y_dim
-        
-        padding_val = x_dim % grid_size
-        ## Add padding to the image
-        padded_image = F.pad(I, (padding_val, padding_val, padding_val, padding_val), mode='constant', value=0)
-        
-        grid_dim = int((x_dim + 2 * padding_val) / grid_size)
+        grid_dim = math.ceil(x_dim / grid_size)
         num_pixel = int(grid_dim*grid_dim*self.init_picked_percentage)
         
         print("Grid size: {}".format(grid_dim))
@@ -84,16 +87,16 @@ class LocSearchAdv(AttackMethod):
         ## Randomly pick pixels to start
         P_X, P_Y = np.random.choice(range(grid_dim), num_pixel), np.random.choice(range(grid_dim), num_pixel)
         # copying the image
-        I_hat = copy.deepcopy(padded_image)
+        I_hat = copy.deepcopy(I)
         
         for iter in range (R):
             print(iter)
             ## Compute function g
             scores = []
-            for i in range(len(P_X)):    
-                img = self.pert(I_hat, p, P_X[i], P_Y[i], grid_size)
+            for i in range(len(P_X)):
+                pts_to_pert = self.get_pic_coordinates(P_X[i], P_Y[i], grid_size, x_dim, y_dim)    
+                img = self.pert(I_hat, p, pts_to_pert)
                 img = self.rescale(img, self.LB, self.UB, MODEL_LB, MODEL_UB)
-                img = img[:, :, padding_val: -padding_val , padding_val: -padding_val]
 
                 pred = self.model.predict(img)
                 score = nn.Softmax(dim=1)(pred)[0, true_label_idx].item()
@@ -112,17 +115,14 @@ class LocSearchAdv(AttackMethod):
             
             print(avg, p, sep= "   ")
             
-            for i in range (t): 
-                start_x = P_XI[i] * grid_size
-                start_y = P_YI[i] * grid_size
-                pts_to_pert = [(start_x+i,start_y+j) for i in range (grid_size) for j in range (grid_size)]
+            for i in range (t):                 
+                pts_to_pert = self.get_pic_coordinates(P_XI[i], P_YI[i], grid_size, x_dim, y_dim)    
                 
                 for x, y in pts_to_pert:
                     for j in range (color_channel):
                         I_hat[:, j, x, y] = self.cyclic(I_hat, r, j, x, y) 
 
             img_I_hat = self.rescale(I_hat, self.LB, self.UB, MODEL_LB, MODEL_UB)
-            img_I_hat = img_I_hat[:, :, padding_val: -padding_val , padding_val: -padding_val]
             pred_I_hat = self.model.predict(img_I_hat)
             
             self.logit = pred_I_hat
