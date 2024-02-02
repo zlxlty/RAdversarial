@@ -1,0 +1,8 @@
+# Attack config file for fgsm attack
+# Fraction is represented as [numerator, denominator] list
+---
+epsilon:
+  - 32.
+  - 255.0
+num_iter: 1
+targeted: False

@@ -1,11 +1,11 @@
 from classifiers import get_target_model
-from attacks import PGDMethod
+from attacks import PGDMethod, FGSMMethod
 from PIL import Image
 import requests
 import torch.nn as nn
 import torch
 
-from defines import IMAGE_PATH, EVAL_PATH
+from defines import IMAGE_PATH, EVAL_PATH, CONFIG_PATH
 
 # values are standard normalization for ImageNet images, 
 # from https://github.com/pytorch/examples/blob/master/imagenet/main.py
@@ -20,18 +20,15 @@ def generate_image_data():
     # This is a fake image getter for testing
     yield "pig.jpg", Image.open(f"{IMAGE_PATH}/pig.jpg"), 341
 
-FGSMMethod = None
 attack_methods = {
     "PGD": {
-        "config": "attacks/config/pgd.yaml",
+        "config": f"{CONFIG_PATH}/pgd.yaml",
         "method": PGDMethod
     },
-    # "FGSM": {
-    #     "epsilon": 5./255.,
-    #     "num_iter": 1,
-    #     "targeted": False,
-    #     "method": FGSMMethod
-    # }
+    "FGSM": {
+        "config": f"{CONFIG_PATH}/fgsm.yaml",
+        "method": FGSMMethod
+    }
 }
 
 if __name__ == '__main__':
@@ -47,7 +44,7 @@ if __name__ == '__main__':
             
             attack["method"](target_model, config_path)\
                 .do_perturbation(input_tensor, true_label_idx)\
-                .do_eval(true_label_idx)\
+                .do_eval(true_label_idx, topk=3)\
                 .save_perturbation_to_png(f"{IMAGE_PATH}/{method_name}/perturbed_{image_name[:-4]}.png")\
                 .save_eval_to_json(image_name, true_label_idx, f"{EVAL_PATH}/{method_name}/{method_name}_exp.json")
             
