@@ -1,12 +1,12 @@
 from classifiers import get_target_model
-from attacks import PGDMethod, LocSearchAdv
+from attacks import PGDMethod, FGSMMethod, LocSearchAdv
 from PIL import Image
 import requests
 import torch
 import torch.nn as nn
 
 import os
-from defines import IMAGE_PATH, EVAL_PATH
+from defines import IMAGE_PATH, EVAL_PATH, CONFIG_PATH
 
 
 # values are standard normalization for ImageNet images, 
@@ -29,21 +29,18 @@ def create_dir(dir):
     if not os.path.exists(dir):
         os.makedirs(dir)
 
-FGSMMethod = None
 attack_methods = {
-    # "PGD": {
-    #     "config": "attacks/config/pgd.yaml",
-    #     "method": PGDMethod
-    # },
-    # "FGSM": {
-    #     "epsilon": 5./255.,
-    #     "num_iter": 1,
-    #     "targeted": False,
-    #     "method": FGSMMethod
-    # }
     "LocSearchAdv": {
         "config": "attacks/config/locsearchadv.yaml",
         "method": LocSearchAdv
+    },
+    "PGD": {
+        "config": f"{CONFIG_PATH}/pgd.yaml",
+        "method": PGDMethod
+    },
+    "FGSM": {
+        "config": f"{CONFIG_PATH}/fgsm.yaml",
+        "method": FGSMMethod
     }
 }
 
@@ -75,9 +72,9 @@ if __name__ == '__main__':
             
             attack["method"](target_model, config_path)\
                 .do_perturbation(input_tensor, true_label_idx)\
-                .do_eval(true_label_idx)\
-                .save_perturbation_to_png(f"{img_directory}/perturbed_{image_name[:-4]}.png")\
-                .save_eval_to_json(image_name, true_label_idx, f"{EVAL_PATH}/{method_name}.json")
+                .do_eval(true_label_idx, topk=3)\
+                .save_perturbation_to_png(f"{IMAGE_PATH}/{method_name}/perturbed_{image_name[:-4]}.png")\
+                .save_eval_to_json(image_name, true_label_idx, f"{EVAL_PATH}/{method_name}/{method_name}_exp.json")
             
             print()
     

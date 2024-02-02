@@ -79,7 +79,6 @@ class AttackMethod():
         if os.path.exists(filename):
             with open(filename, 'r') as f:
                 result_list = json.load(f)
-                print(result_list)
             
         if isinstance(result_list, list):
             with open(filename, 'w') as f:
