@@ -9,7 +9,6 @@ class PGDMethod(AttackMethod):
         ## Get attack config
         epsilon = self.param_config["epsilon"][0] /  self.param_config["epsilon"][1]
         num_iteration = self.param_config["num_iter"]
-        targeted = self.param_config["targeted"]
         
         delta = torch.zeros_like(input_tensor, requires_grad=True)
 
