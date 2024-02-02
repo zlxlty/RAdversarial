@@ -3,5 +3,6 @@ docker run --gpus all \
     --ulimit stack=67108864 \
     -it \
     -v $(pwd):/my-repo \
+    -v /home/comps-shared/datasets/:/dataset \
     -w /my-repo \
     --rm comps
