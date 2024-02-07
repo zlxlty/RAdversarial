@@ -70,6 +70,8 @@ class LocSearchAdv(AttackMethod):
         R = self.param_config["R"]
         grid_size = self.param_config["grid_size"]
         
+        iters_to_ignore = self.param_config["iters_to_ignore"]
+        
         self.init_picked_percentage = self.param_config["init_percentage"]
         self.LB = self.param_config["LB"]
         self.UB = self.param_config["UB"]
@@ -82,8 +84,6 @@ class LocSearchAdv(AttackMethod):
         grid_dim = math.ceil(x_dim / grid_size)
         num_pixel = int(grid_dim*grid_dim*self.init_picked_percentage)
         
-        print("Grid size: {}".format(grid_dim))
-        
         ## Randomly pick pixels to start
         P_X, P_Y = np.random.choice(range(grid_dim), num_pixel), np.random.choice(range(grid_dim), num_pixel)
         # copying the image
@@ -92,7 +92,10 @@ class LocSearchAdv(AttackMethod):
         pts_perturbed = []
         
         for iter in range (R):
-            print(iter)
+            if iter // (iters_to_ignore + 1) != 0:
+                pts_perturbed = pts_perturbed[t:]
+            print("\nIter: {}    Num Pixels Ignored: {}".format(iter, len(pts_perturbed)))
+            
             ## Compute function g
             scores = []
             for i in range(len(P_X)):
@@ -106,9 +109,9 @@ class LocSearchAdv(AttackMethod):
             
             sorted_scores = np.argsort(scores)
             scores.sort()
-            scores = scores[:t]
-            P_XI, P_YI = (P_X[sorted_scores])[:t], (P_Y[sorted_scores])[:t]
-            avg = sum(scores) / len(scores)
+            first_t_scores = scores[:t]
+            P_XI, P_YI = P_X[sorted_scores], P_Y[sorted_scores]
+            avg = sum(first_t_scores) / len(first_t_scores)
             
             if avg >= 0.5:
                 p *= 1.1
@@ -116,18 +119,28 @@ class LocSearchAdv(AttackMethod):
                 p *= 0.9
             
             print(avg, p, sep= "   ")
-            num_pass = 0
-            for i in range (t):                 
-                pts_to_pert = self.get_pic_coordinates(P_XI[i], P_YI[i], grid_size, x_dim, y_dim)    
+            
+            num_perturbed = 0
+            i = 0
+            P_X_perturbed, P_Y_perturbed = [], []
+            while num_perturbed < t:  
+                x, y = P_XI[i], P_YI[i]
+                if ((x, y) in pts_perturbed):
+                    i += 1
+                    continue
+                
+                pts_perturbed.append((x, y))    
+                P_X_perturbed.append(x)
+                P_Y_perturbed.append(y)
+                pts_to_pert = self.get_pic_coordinates(x, y, grid_size, x_dim, y_dim)    
                 for x, y in pts_to_pert:
-                    if (x, y) in pts_perturbed:
-                        num_pass += 1
-                        # print("pass")
-                        continue
                     for j in range (color_channel):
                         I_hat[:, j, x, y] = self.cyclic(I_hat, r, j, x, y) 
-                        pts_perturbed.append((x, y))
-            print(num_pass)
+                
+                num_perturbed += 1
+                i += 1
+            
+            
             img_I_hat = self.rescale(I_hat, self.LB, self.UB, MODEL_LB, MODEL_UB)
             pred_I_hat = self.model.predict(img_I_hat)
             
@@ -141,9 +154,8 @@ class LocSearchAdv(AttackMethod):
             
             ## Update neighborhood of pixel location for next round
             P_X, P_Y = [], []
-            
             for i in range (t):
-                x, y = P_XI[i], P_YI[i]
+                x, y = P_X_perturbed[i], P_Y_perturbed[i]                
                 for row in range(-d, d+1):
                     for col in range(-d, d+1):
                         new_x = x + col

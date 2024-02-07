@@ -8,7 +8,7 @@ import torch.nn as nn
 import os
 from defines import IMAGE_PATH, EVAL_PATH, CONFIG_PATH, DATASET_PATH
 
-NUM_IMAGES_TO_TEST = 1
+NUM_IMAGES_TO_TEST = 100
 
 # values are standard normalization for ImageNet images, 
 # from https://github.com/pytorch/examples/blob/master/imagenet/main.py
@@ -24,7 +24,7 @@ def generate_image_data():
     with open(label_txt, "r") as f:
         name2label = {line.split(": ")[0]: line.split(": ")[1] for line in f.readlines()}
     # iterate and open each image file in image folder
-    for image_name in os.listdir(image_folder):
+    for image_name in os.listdir(image_folder)[:NUM_IMAGES_TO_TEST]:
         image = Image.open(f"{image_folder}/{image_name}")
         true_label = name2label[image_name].split("\n")[0]
         yield image_name, image, true_label
@@ -37,6 +37,10 @@ def create_dir(dir):
 attack_methods = {
     "LocSearchAdv": {
         "config": f"{CONFIG_PATH}/locsearchadv.yaml",
+        "method": LocSearchAdv
+    },
+    "LocSearchAdv_NoPixelIgnore": {
+        "config": f"{CONFIG_PATH}/locsearchadv_no_ignore.yaml",
         "method": LocSearchAdv
     },
     # "PGD": {
@@ -53,11 +57,6 @@ if __name__ == '__main__':
     # device = "cuda:0" if torch.cuda.is_available() else "cpu"
     device = "cpu"
     target_model = get_target_model("MobileViT", device)
-
-    # max_class = logit.max(dim=1)[1].item()
-    # print(max_class)
-    # print("Predicted class: ", target_model.id2label(max_class))
-    # print("Predicted probability:", nn.Softmax(dim=1)(logit)[0, max_class].item())
     
     for method_name in attack_methods:
         attack = attack_methods[method_name]
@@ -82,5 +81,5 @@ if __name__ == '__main__':
                 .save_perturbation_to_png(f"{img_dir}/perturbed_{image_name}.png")\
                 .save_eval_to_json(image_name, true_label_idx, f"{eval_dir}/{method_name}_exp.json")
             
-            print()
+            print("\n\n")
     

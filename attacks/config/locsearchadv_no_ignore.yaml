@@ -9,4 +9,4 @@ t: 5
 k: 1
 R: 150
 grid_size: 5
-iters_to_ignore: 2
+iters_to_ignore: 0
