@@ -4,8 +4,9 @@ from PIL import Image
 import requests
 import torch.nn as nn
 import torch
+import os
 
-from defines import IMAGE_PATH, EVAL_PATH, CONFIG_PATH
+from defines import IMAGE_PATH, EVAL_PATH, CONFIG_PATH, DATASET_PATH
 
 # values are standard normalization for ImageNet images, 
 # from https://github.com/pytorch/examples/blob/master/imagenet/main.py
@@ -16,9 +17,15 @@ def generate_image_data():
         image: PIL.Image
         true_label_idx: int
     '''
-    
-    # This is a fake image getter for testing
-    yield "pig.jpg", Image.open(f"{IMAGE_PATH}/pig.jpg"), 341
+    image_folder = f"{DATASET_PATH}/images"
+    label_txt = f"{DATASET_PATH}/labels.txt"
+    with open(label_txt, "r") as f:
+        name2label = {line.split(": ")[0]: line.split(": ")[1] for line in f.readlines()}
+    # iterate and open each image file in image folder
+    for image_name in os.listdir(image_folder):
+        image = Image.open(f"{image_folder}/{image_name}")
+        true_label = name2label[image_name].split("\n")[0]
+        yield image_name, image, true_label
 
 attack_methods = {
     "PGD": {
@@ -39,9 +46,9 @@ if __name__ == '__main__':
         attack = attack_methods[method_name]
         config_path = attack["config"]
         image_data_generator = generate_image_data()
-        for image_name, original_image, true_label_idx in image_data_generator:
+        for image_name, original_image, true_label in image_data_generator:
             input_tensor = target_model.preprocess(original_image)
-            
+            true_label_idx = target_model.label2id(true_label)
             attack["method"](target_model, config_path)\
                 .do_perturbation(input_tensor, true_label_idx)\
                 .do_eval(true_label_idx, topk=3)\

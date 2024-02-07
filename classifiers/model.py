@@ -18,6 +18,11 @@ class TargetModel():
     def predict(self, inputs: torch.Tensor) -> Dict[str, Any]:
         pass
     
+class SurrogateModel(TargetModel):
+    def __init__(self, device: str):
+        self.model = torch.load("/surrogate_model.pth").to(device)
+        pass
+    
 class MobileViTModel(TargetModel):
     def __init__(self, device: str):
         self.model = MobileViTForImageClassification.from_pretrained("apple/mobilevit-small").to(device)
@@ -30,6 +35,9 @@ class MobileViTModel(TargetModel):
     
     def id2label(self, id: int) -> str:
         return self.model.config.id2label[id]
+    
+    def label2id(self, label: str) -> int:
+        return self.model.config.label2id[label]
 
     def getDevice(self) -> str:
         return self.device
