@@ -89,6 +89,8 @@ class LocSearchAdv(AttackMethod):
         # copying the image
         I_hat = copy.deepcopy(I)
         
+        pts_perturbed = []
+        
         for iter in range (R):
             print(iter)
             ## Compute function g
@@ -114,14 +116,18 @@ class LocSearchAdv(AttackMethod):
                 p *= 0.9
             
             print(avg, p, sep= "   ")
-            
+            num_pass = 0
             for i in range (t):                 
                 pts_to_pert = self.get_pic_coordinates(P_XI[i], P_YI[i], grid_size, x_dim, y_dim)    
-                
                 for x, y in pts_to_pert:
+                    if (x, y) in pts_perturbed:
+                        num_pass += 1
+                        # print("pass")
+                        continue
                     for j in range (color_channel):
                         I_hat[:, j, x, y] = self.cyclic(I_hat, r, j, x, y) 
-
+                        pts_perturbed.append((x, y))
+            print(num_pass)
             img_I_hat = self.rescale(I_hat, self.LB, self.UB, MODEL_LB, MODEL_UB)
             pred_I_hat = self.model.predict(img_I_hat)
             

@@ -1,4 +1,4 @@
-docker run --gpus all \
+docker run\
     --ipc=host --ulimit memlock=-1 \
     --ulimit stack=67108864 \
     -it \

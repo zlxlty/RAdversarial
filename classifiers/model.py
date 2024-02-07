@@ -31,6 +31,9 @@ class MobileViTModel(TargetModel):
     
     def id2label(self, id: int) -> str:
         return self.model.config.id2label[id]
+    
+    def label2id(self, label: str) -> int:
+        return self.model.config.label2id[label]
 
     def getDevice(self) -> str:
         return self.device

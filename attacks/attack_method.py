@@ -28,12 +28,16 @@ class AttackMethod():
         '''
         raise NotImplementedError
     
-    def do_eval(self, true_label_idx: int, topk: int = 5) -> 'AttackMethod':
+    def do_eval(self, org_img_tensor: torch.Tensor, true_label_idx: int, topk: int = 5) -> 'AttackMethod':
         if self.logit is None:
             raise Exception("Must call do_perturbation first")
         
         if topk < 1 or topk > 5:
             raise Exception("topk must be between 1 and 5")
+        
+        # Original Image Prob
+        pred = self.model.predict(org_img_tensor)
+        self.original_prediction_result = nn.Softmax(dim=1)(pred)[0, true_label_idx].item()
         
         # # Top 1 accuracy
         self.true_class_probability = nn.Softmax(dim=1)(self.logit)[0, true_label_idx].item()
@@ -69,10 +73,11 @@ class AttackMethod():
         json_dict = {
             "input_name": input_name,
             "true_label_idx": true_label_idx,
-            "true_class_probability": self.true_class_probability,
-            "topk_indices": self.topk_indices,
-            "topk_labels": self.topk_labels,
-            "topk_probabilities": self.topk_probabilities
+            "original_true_class_probability": self.original_prediction_result,
+            "perturbed_true_class_probability": self.true_class_probability,
+            "perturbed_topk_indices": self.topk_indices,
+            "perturbed_topk_labels": self.topk_labels,
+            "perturbed_topk_probabilities": self.topk_probabilities
         }
         
         result_list = None
