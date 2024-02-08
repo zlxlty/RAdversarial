@@ -95,7 +95,7 @@ class LocSearchAdv(AttackMethod):
             if iter // (iters_to_ignore + 1) != 0:
                 pts_perturbed = pts_perturbed[t:]
             print("\nIter: {}    Num Pixels Ignored: {}".format(iter, len(pts_perturbed)))
-            
+            self.number_iteration = iter
             ## Compute function g
             scores = []
             for i in range(len(P_X)):

@@ -17,6 +17,8 @@ class AttackMethod():
         self.perturbated_input = None
         self.logit = None
         
+        self.number_iteration = "Not Applicable"
+        
         with open(config_file, 'r') as file:
             data = yaml.safe_load(file)
         self.param_config = data
@@ -73,6 +75,7 @@ class AttackMethod():
         json_dict = {
             "input_name": input_name,
             "true_label_idx": true_label_idx,
+            "num_iteration": self.number_iteration,
             "original_true_class_probability": self.original_prediction_result,
             "perturbed_true_class_probability": self.true_class_probability,
             "perturbed_topk_indices": self.topk_indices,

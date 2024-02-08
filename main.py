@@ -54,8 +54,8 @@ attack_methods = {
 }
 
 if __name__ == '__main__':    
-    # device = "cuda:0" if torch.cuda.is_available() else "cpu"
-    device = "cpu"
+    
+    device = "cuda:0" if torch.cuda.is_available() else "cpu"
     target_model = get_target_model("MobileViT", device)
     
     for method_name in attack_methods:
