@@ -8,7 +8,7 @@ import sys
 
 import yaml
 sys.path.append("..")
-from classifiers import TargetModel
+from classifiers import TargetModel, label2id, id2label
 
 class AttackMethod():
     def __init__(self, model: TargetModel, config_file: str):
@@ -37,14 +37,11 @@ class AttackMethod():
         # # Top 1 accuracy
         self.true_class_probability = nn.Softmax(dim=1)(self.logit)[0, true_label_idx].item()
         print("True class probability:", self.true_class_probability)
-        # max_class = self.logit.max(dim=1)[1].item()
-        # print("Predicted class: ", self.model.id2label(max_class))
-        # print("Predicted probability:", nn.Softmax(dim=1)(self.logit)[0, max_class].item())
         
         # Top k accuracy
         topk_indices = torch.topk(self.logit, topk, dim=1)[1].squeeze().tolist()
         topk_indices = [topk_indices] if topk == 1 else topk_indices
-        topk_labels = [self.model.id2label(idx) for idx in topk_indices]
+        topk_labels = [id2label(idx) for idx in topk_indices]
         topk_probabilities = nn.Softmax(dim=1)(self.logit)[0, topk_indices].tolist()
         print("Predicted top 5 classes: ", topk_labels)
         print("Predicted top 5 probabilities:", topk_probabilities)
@@ -90,6 +87,24 @@ class AttackMethod():
                 json.dump([json_dict], f)
                 
     
+        return self
+    
+    def save_perturbation_to_json(self, filename: str) -> 'AttackMethod':
+        if self.perturbed_input is None:
+            raise Exception("Must call do_perturbation first")
+        
+        if filename[-5:] != ".json":
+            raise Exception("Filename must end with .json")
+        
+        import json
+        
+        json_dict = {
+            "perturbed_input": self.perturbed_input.tolist()
+        }
+        
+        with open(filename, 'w') as f:
+            json.dump(json_dict, f)
+            
         return self
     
     def save_perturbation_to_png(self, filename: str) -> 'AttackMethod':

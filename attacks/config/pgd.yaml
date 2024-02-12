@@ -4,5 +4,5 @@
 epsilon:
   - 5.0
   - 255.0
-num_iter: 40
+num_iter: 30
 targeted: False
