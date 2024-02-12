@@ -15,7 +15,7 @@ class AttackMethod():
         self.model = model
         self.perturbated_input = None
         self.logit = None
-        self.number_iteration = "Not Applicable"
+        self.number_iteration = None
         
         with open(config_file, 'r') as file:
             data = yaml.safe_load(file)
@@ -72,13 +72,16 @@ class AttackMethod():
         json_dict = {
             "input_name": input_name,
             "true_label_idx": true_label_idx,
-            "num_iteration": self.number_iteration,
             "original_true_class_probability": self.original_prediction_result,
             "true_class_probability": self.true_class_probability,
             "topk_indices": self.topk_indices,
             "topk_labels": self.topk_labels,
             "topk_probabilities": self.topk_probabilities
         }
+        
+        ## Only for LocSearchAdv
+        if self.number_iteration is not None:
+            json_dict["num_iteration"] = self.number_iteration
         
         result_list = None
         if os.path.exists(filename):

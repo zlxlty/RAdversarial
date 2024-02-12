@@ -1,31 +1,36 @@
-from classifiers import get_target_model, label2id
-from attacks import PGDMethod, FGSMMethod, LocSearchAdv
 from PIL import Image
-import requests
 import torch
-import torch.nn as nn
-
 import os
+
 from defines import IMAGE_PATH, EVAL_PATH, CONFIG_PATH, DATASET_PATH
+from classifiers import get_target_model, label2id
+from attacks import PGDMethod, FGSMMethod, LocSearchAdv, NoMethod
+
 
 # values are standard normalization for ImageNet images, 
 # from https://github.com/pytorch/examples/blob/master/imagenet/main.py
 def generate_image_data():
     '''
-    TODO[dataset]: Get image data from ImageNet1k folder
+    [dataset]: Get image data from ImageNet1k folder
     Returns:
         image: PIL.Image
         true_label_idx: int
     '''
-    image_folder = f"{DATASET_PATH}/images"
-    label_txt = f"{DATASET_PATH}/labels.txt"
-    with open(label_txt, "r") as f:
-        name2label = {line.split(": ")[0]: line.split(": ")[1] for line in f.readlines()}
-    # iterate and open each image file in image folder
-    for image_name in os.listdir(image_folder)[:1]:
-        image = Image.open(f"{image_folder}/{image_name}")
-        true_label = name2label[image_name].split("\n")[0]
-        yield image_name, image, true_label
+    # image_folder = f"{DATASET_PATH}/images"
+    # label_txt = f"{DATASET_PATH}/labels.txt"
+    # with open(label_txt, "r") as f:
+    #     name2label = {line.split(": ")[0]: line.split(": ")[1] for line in f.readlines()}
+    # # iterate and open each image file in image folder
+    # for image_name in os.listdir(image_folder)[:1]:
+    #     image = Image.open(f"{image_folder}/{image_name}")
+    #     true_label = name2label[image_name].split("\n")[0]
+    #     yield image_name, image, true_label
+    
+    yield "alice.jpg", Image.open("images/alice.jpg"), "jersey, T-shirt, tee shirt"
+    # yield "milo.jpg", Image.open("images/milo.jpg"), "tabby, tabby cat"
+    # yield "ox.jpg", Image.open("images/ox.jpg"), "ox"
+    # yield "puppy.jpg", Image.open("images/puppy.jpg"), "Labrador retriever"
+    # yield "pig.jpg", Image.open("images/pig.jpg"), "hog, pig, grunter, squealer, Sus scrofa"
 
 
 def create_dir(dir):
@@ -33,22 +38,22 @@ def create_dir(dir):
         os.makedirs(dir)
 
 attack_methods = {
-    "LocSearchAdv_a": {
+    "LocSearchAdv_NonImageNet1": {
         "config": f"{CONFIG_PATH}/locsearchadv.yaml",
         "method": LocSearchAdv
     },
-    "PGD_a": {
+    "PGD_NonImageNet1": {
         "config": f"{CONFIG_PATH}/pgd.yaml",
         "method": PGDMethod
     },
-    # "FGSM": {
-    #     "config": f"{CONFIG_PATH}/fgsm.yaml",
-    #     "method": FGSMMethod
-    # },
-    # "NO": {
-    #     "config": f"{CONFIG_PATH}/no.yaml",
-    #     "method": NoMethod
-    # },
+    "FGSM_NonImageNet1": {
+        "config": f"{CONFIG_PATH}/fgsm.yaml",
+        "method": FGSMMethod
+    },
+    "NO_NonImageNet1": {
+        "config": f"{CONFIG_PATH}/no.yaml",
+        "method": NoMethod
+    },
 }
 
 if __name__ == '__main__':    
