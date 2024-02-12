@@ -21,7 +21,7 @@ def generate_image_data():
     with open(label_txt, "r") as f:
         name2label = {line.split(": ")[0]: line.split(": ")[1] for line in f.readlines()}
     # iterate and open each image file in image folder
-    for image_name in os.listdir(image_folder)[:1]:
+    for image_name in os.listdir(image_folder):
         image = Image.open(f"{image_folder}/{image_name}")
         true_label = name2label[image_name].split("\n")[0]
         yield image_name, image, true_label
