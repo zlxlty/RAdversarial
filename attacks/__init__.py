@@ -1,4 +1,5 @@
 from .attack_method import AttackMethod
 from .pgd import PGDMethod
-from .locsearchadv import LocSearchAdv
 from .fgsm import FGSMMethod
+from .noattack import NoMethod
+from .locsearchadv import LocSearchAdv

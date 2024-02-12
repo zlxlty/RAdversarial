@@ -10,6 +10,8 @@ class PGDMethod(AttackMethod):
         epsilon = self.param_config["epsilon"][0] /  self.param_config["epsilon"][1]
         num_iteration = self.param_config["num_iter"]
         
+        torch.manual_seed("2024")
+        
         delta = torch.zeros_like(input_tensor, requires_grad=True)
 
         opt= optim.SGD([delta], lr=1e-1)
@@ -27,9 +29,9 @@ class PGDMethod(AttackMethod):
             opt.step()
             delta.data.clamp_(-epsilon, epsilon)
         
-        
-        self.perturbed_input = torch.clamp(input_tensor + delta, 0, 1).detach()
-        self.logit = self.model.predict(perturbed_input).detach()
+        delta = delta.detach()
+        self.perturbed_input = torch.clamp(input_tensor + delta, 0, 1)
+        self.logit = self.model.predict(perturbed_input)
         
         return self
         

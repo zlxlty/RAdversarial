@@ -1,4 +1,4 @@
-from classifiers import get_target_model
+from classifiers import get_target_model, label2id
 from attacks import PGDMethod, FGSMMethod, LocSearchAdv
 from PIL import Image
 import requests
@@ -22,7 +22,7 @@ def generate_image_data():
     with open(label_txt, "r") as f:
         name2label = {line.split(": ")[0]: line.split(": ")[1] for line in f.readlines()}
     # iterate and open each image file in image folder
-    for image_name in os.listdir(image_folder):
+    for image_name in os.listdir(image_folder)[:1]:
         image = Image.open(f"{image_folder}/{image_name}")
         true_label = name2label[image_name].split("\n")[0]
         yield image_name, image, true_label
@@ -33,10 +33,22 @@ def create_dir(dir):
         os.makedirs(dir)
 
 attack_methods = {
-    "LocSearchAdv": {
+    "LocSearchAdv_a": {
         "config": f"{CONFIG_PATH}/locsearchadv.yaml",
         "method": LocSearchAdv
-    }
+    },
+    "PGD_a": {
+        "config": f"{CONFIG_PATH}/pgd.yaml",
+        "method": PGDMethod
+    },
+    # "FGSM": {
+    #     "config": f"{CONFIG_PATH}/fgsm.yaml",
+    #     "method": FGSMMethod
+    # },
+    # "NO": {
+    #     "config": f"{CONFIG_PATH}/no.yaml",
+    #     "method": NoMethod
+    # },
 }
 
 if __name__ == '__main__':    
@@ -60,7 +72,7 @@ if __name__ == '__main__':
             print(image_name, true_label, sep= "   ")
             
             input_tensor = target_model.preprocess(original_image)
-            true_label_idx = target_model.label2id(true_label)
+            true_label_idx = label2id(true_label)
             
             attack["method"](target_model, config_path)\
                 .do_perturbation(input_tensor, true_label_idx)\
@@ -70,4 +82,3 @@ if __name__ == '__main__':
             
             print("\n")
         print("\n\n")
-    
