@@ -1,1 +1,1 @@
-from .locsearchadv import do_locsearchadv
+from .method import LocSearchAdv

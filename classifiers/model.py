@@ -5,6 +5,7 @@ import torch
 import torch.optim as optim
 from torchvision import transforms, models
 import requests
+from torchvision import transforms
 from typing import *
 
 class TargetModel():
