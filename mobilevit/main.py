@@ -2,6 +2,7 @@ from transformers import MobileViTImageProcessor, MobileViTForImageClassificatio
 from PIL import Image
 import requests
 from typing import *
+from classifiers import id2label
 
 
 def predict(image: Image.Image) -> Dict[str, Any]:
@@ -19,7 +20,7 @@ def predict(image: Image.Image) -> Dict[str, Any]:
 
     predicted_class_idx = result_distribution.argmax(-1).item()
     print(result_distribution[0][predicted_class_idx])
-    return model.config.id2label[predicted_class_idx]
+    return id2label[predicted_class_idx]
 
 
 if __name__ == "__main__":

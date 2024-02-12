@@ -1,5 +1,5 @@
-from classifiers import get_target_model
-from attacks import PGDMethod, FGSMMethod
+from classifiers import get_target_model, label2id
+from attacks import PGDMethod, FGSMMethod, NoMethod
 from PIL import Image
 import requests
 import torch.nn as nn
@@ -32,10 +32,14 @@ attack_methods = {
         "config": f"{CONFIG_PATH}/pgd.yaml",
         "method": PGDMethod
     },
-    "FGSM": {
-        "config": f"{CONFIG_PATH}/fgsm.yaml",
-        "method": FGSMMethod
-    }
+    # "FGSM": {
+    #     "config": f"{CONFIG_PATH}/fgsm.yaml",
+    #     "method": FGSMMethod
+    # },
+    # "NO": {
+    #     "config": f"{CONFIG_PATH}/no.yaml",
+    #     "method": NoMethod
+    # },
 }
 
 if __name__ == '__main__':
@@ -48,15 +52,11 @@ if __name__ == '__main__':
         image_data_generator = generate_image_data()
         for image_name, original_image, true_label in image_data_generator:
             input_tensor = target_model.preprocess(original_image)
-            true_label_idx = target_model.label2id(true_label)
+            true_label_idx = label2id(true_label)
             attack["method"](target_model, config_path)\
                 .do_perturbation(input_tensor, true_label_idx)\
                 .do_eval(true_label_idx, topk=3)\
-                .save_perturbation_to_png(f"{IMAGE_PATH}/{method_name}/perturbed_{image_name[:-4]}.png")\
-                .save_eval_to_json(image_name, true_label_idx, f"{EVAL_PATH}/{method_name}/{method_name}_exp.json")
-            
-    # logit = target_model.predict(input_tensor)
-    # max_class = logit.max(dim=1)[1].item()
-    # print("Predicted class: ", target_model.id2label(max_class))
-    # print("Predicted probability:", nn.Softmax(dim=1)(logit)[0, max_class].item())
+                .save_eval_to_json(image_name, true_label_idx, f"{EVAL_PATH}/{method_name}/{method_name}_exp.json")\
+                # .save_perturbation_to_json(f"{IMAGE_PATH}/{method_name}/perturbed_{image_name[:-4]}.json")\
+                # .save_perturbation_to_png(f"{IMAGE_PATH}/{method_name}/perturbed_{image_name[:-4]}.png")\
     
