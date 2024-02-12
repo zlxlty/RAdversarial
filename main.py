@@ -73,7 +73,7 @@ if __name__ == '__main__':
             
             input_tensor = target_model.preprocess(original_image)
             true_label_idx = label2id(true_label)
-            
+
             attack["method"](target_model, config_path)\
                 .do_perturbation(input_tensor, true_label_idx)\
                 .do_eval(input_tensor ,true_label_idx, topk=3)\
