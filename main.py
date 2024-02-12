@@ -16,21 +16,15 @@ def generate_image_data():
         image: PIL.Image
         true_label_idx: int
     '''
-    # image_folder = f"{DATASET_PATH}/images"
-    # label_txt = f"{DATASET_PATH}/labels.txt"
-    # with open(label_txt, "r") as f:
-    #     name2label = {line.split(": ")[0]: line.split(": ")[1] for line in f.readlines()}
-    # # iterate and open each image file in image folder
-    # for image_name in os.listdir(image_folder)[:1]:
-    #     image = Image.open(f"{image_folder}/{image_name}")
-    #     true_label = name2label[image_name].split("\n")[0]
-    #     yield image_name, image, true_label
-    
-    yield "alice.jpg", Image.open("images/alice.jpg"), "jersey, T-shirt, tee shirt"
-    # yield "milo.jpg", Image.open("images/milo.jpg"), "tabby, tabby cat"
-    # yield "ox.jpg", Image.open("images/ox.jpg"), "ox"
-    # yield "puppy.jpg", Image.open("images/puppy.jpg"), "Labrador retriever"
-    # yield "pig.jpg", Image.open("images/pig.jpg"), "hog, pig, grunter, squealer, Sus scrofa"
+    image_folder = f"{DATASET_PATH}/images"
+    label_txt = f"{DATASET_PATH}/labels.txt"
+    with open(label_txt, "r") as f:
+        name2label = {line.split(": ")[0]: line.split(": ")[1] for line in f.readlines()}
+    # iterate and open each image file in image folder
+    for image_name in os.listdir(image_folder)[:1]:
+        image = Image.open(f"{image_folder}/{image_name}")
+        true_label = name2label[image_name].split("\n")[0]
+        yield image_name, image, true_label
 
 
 def create_dir(dir):
@@ -38,22 +32,22 @@ def create_dir(dir):
         os.makedirs(dir)
 
 attack_methods = {
-    "LocSearchAdv_NonImageNet1": {
+    "LocSearchAdv": {
         "config": f"{CONFIG_PATH}/locsearchadv.yaml",
         "method": LocSearchAdv
     },
-    "PGD_NonImageNet1": {
-        "config": f"{CONFIG_PATH}/pgd.yaml",
-        "method": PGDMethod
-    },
-    "FGSM_NonImageNet1": {
-        "config": f"{CONFIG_PATH}/fgsm.yaml",
-        "method": FGSMMethod
-    },
-    "NO_NonImageNet1": {
-        "config": f"{CONFIG_PATH}/no.yaml",
-        "method": NoMethod
-    },
+    "PGD": {
+         "config": f"{CONFIG_PATH}/pgd.yaml",
+         "method": PGDMethod
+     },
+     # "FGSM": {
+     #     "config": f"{CONFIG_PATH}/fgsm.yaml",
+     #     "method": FGSMMethod
+     # },
+     # "NO": {
+     #     "config": f"{CONFIG_PATH}/no.yaml",
+     #     "method": NoMethod
+     # },
 }
 
 if __name__ == '__main__':    
