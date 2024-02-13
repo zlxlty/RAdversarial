@@ -1,3 +1,5 @@
+from classifiers import get_target_model, label2id, VGG16
+from attacks import PGDMethod, FGSMMethod, NoMethod
 from PIL import Image
 import torch
 import os
@@ -36,48 +38,47 @@ attack_methods = {
         "config": f"{CONFIG_PATH}/locsearchadv.yaml",
         "method": LocSearchAdv
     },
-    "PGD": {
-         "config": f"{CONFIG_PATH}/pgd.yaml",
-         "method": PGDMethod
-     },
-     # "FGSM": {
-     #     "config": f"{CONFIG_PATH}/fgsm.yaml",
-     #     "method": FGSMMethod
-     # },
-     # "NO": {
-     #     "config": f"{CONFIG_PATH}/no.yaml",
-     #     "method": NoMethod
-     # },
+    "FGSM": {
+        "config": f"{CONFIG_PATH}/fgsm.yaml",
+        "method": FGSMMethod
+    },
+    "NO": {
+        "config": f"{CONFIG_PATH}/no.yaml",
+        "method": NoMethod
+    },
 }
 
-if __name__ == '__main__':    
-    
-    device = "cuda:0" if torch.cuda.is_available() else "cpu"
-    target_model = get_target_model("MobileViT", device)
-    
-    for method_name in attack_methods:
-        print(method_name)
-        attack = attack_methods[method_name]
-        config_path = attack["config"]
-        
-        img_dir = f"{IMAGE_PATH}/{method_name}"
-        eval_dir = f"{EVAL_PATH}/{method_name}"
-        create_dir(img_dir)
-        create_dir(eval_dir)
-            
-        image_data_generator = generate_image_data()
-        
-        for image_name, original_image, true_label in image_data_generator:
-            print(image_name, true_label, sep= "   ")
-            
-            input_tensor = target_model.preprocess(original_image)
-            true_label_idx = label2id(true_label)
+'''
+Choose the target models and attack methods here.
+'''
+TARGET_MODEL = [
+    "MobileViT", 
+    # "Surrogate", 
+    # "ResNet50"
+]
+METHOD_NAMES = [
+    "PGD", 
+    # "FGSM", 
+    # "NO"
+]
 
-            attack["method"](target_model, config_path)\
-                .do_perturbation(input_tensor, true_label_idx)\
-                .do_eval(input_tensor ,true_label_idx, topk=3)\
-                .save_perturbation_to_png(f"{img_dir}/perturbed_{image_name}.png")\
-                .save_eval_to_json(image_name, true_label_idx, f"{eval_dir}/{method_name}_exp.json")
-            
-            print("\n")
-        print("\n\n")
+if __name__ == '__main__':
+    device = "cuda:0" if torch.cuda.is_available() else "cpu"
+    
+    for model_name in TARGET_MODEL:
+        target_model = get_target_model(model_name, device)
+        
+        for method_name in METHOD_NAMES:
+            attack = attack_methods[method_name]
+            config_path = attack["config"]
+            image_data_generator = generate_image_data()
+            for image_name, original_image, true_label in image_data_generator:
+                input_tensor = target_model.preprocess(original_image)
+                true_label_idx = label2id(true_label)
+                attack["method"](target_model, config_path)\
+                    .do_perturbation(input_tensor, true_label_idx)\
+                    .do_eval(true_label_idx, topk=3)\
+                    .save_eval_to_json(image_name, true_label_idx, f"{EVAL_PATH}/{method_name}/{method_name}_{model_name}.json")\
+                    .save_perturbation_to_json(f"{IMAGE_PATH}/{method_name}/perturbed_{image_name[:-5]}.json")\
+                    .save_perturbation_to_png(f"{IMAGE_PATH}/{method_name}/perturbed_{image_name[:-5]}.png")\
+    

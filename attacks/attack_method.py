@@ -71,6 +71,7 @@ class AttackMethod():
         
         json_dict = {
             "input_name": input_name,
+            "true_label": id2label(true_label_idx),
             "true_label_idx": true_label_idx,
             "original_true_class_probability": self.original_prediction_result,
             "true_class_probability": self.true_class_probability,

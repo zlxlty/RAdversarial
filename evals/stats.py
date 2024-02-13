@@ -17,4 +17,4 @@ def getAttackSuccessRate(filename):
     return top1Success / len(result_list), topKSuccess / len(result_list)
 
 if __name__ == "__main__":
-    getAttackSuccessRate("./FGSM/FGSM_ViT_32ep.json")
+    getAttackSuccessRate("./PGD/PGD_MobileViT.json")
