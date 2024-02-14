@@ -42,6 +42,10 @@ attack_methods = {
         "config": f"{CONFIG_PATH}/fgsm.yaml",
         "method": FGSMMethod
     },
+    "PGD": {
+        "config": f"{CONFIG_PATH}/pgd.yaml",
+        "method": PGDMethod
+    },
     "NO": {
         "config": f"{CONFIG_PATH}/no.yaml",
         "method": NoMethod
@@ -54,11 +58,11 @@ Choose the target models and attack methods here.
 TARGET_MODEL = [
     "MobileViT", 
     # "Surrogate", 
-    # "ResNet50"
+    "ResNet50"
 ]
 METHOD_NAMES = [
     "PGD", 
-    # "FGSM", 
+    "FGSM", 
     # "NO"
 ]
 
@@ -67,6 +71,9 @@ if __name__ == '__main__':
     
     for model_name in TARGET_MODEL:
         target_model = get_target_model(model_name, device)
+        true_target_model = None
+        if model_name == "Surrogate":
+            true_target_model = get_target_model("MobileViT", device)
         
         for method_name in METHOD_NAMES:
             attack = attack_methods[method_name]
@@ -77,8 +84,8 @@ if __name__ == '__main__':
                 true_label_idx = label2id(true_label)
                 attack["method"](target_model, config_path)\
                     .do_perturbation(input_tensor, true_label_idx)\
-                    .do_eval(true_label_idx, topk=3)\
+                    .do_eval(input_tensor, true_label_idx, 5, true_target_model)\
                     .save_eval_to_json(image_name, true_label_idx, f"{EVAL_PATH}/{method_name}/{method_name}_{model_name}.json")\
-                    .save_perturbation_to_json(f"{IMAGE_PATH}/{method_name}/perturbed_{image_name[:-5]}.json")\
-                    .save_perturbation_to_png(f"{IMAGE_PATH}/{method_name}/perturbed_{image_name[:-5]}.png")\
+                    .save_perturbation_to_json(f"{IMAGE_PATH}/{method_name}/{model_name}/perturbed_{image_name[:-5]}.json")\
+                    .save_perturbation_to_png(f"{IMAGE_PATH}/{method_name}/{model_name}/perturbed_{image_name[:-5]}.png")\
     
