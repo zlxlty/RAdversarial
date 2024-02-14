@@ -1,0 +1,999 @@
+0: Afghan hound, Afghan
+1: African chameleon, Chamaeleo chamaeleon
+2: African crocodile, Nile crocodile, Crocodylus niloticus
+3: African elephant, Loxodonta africana
+4: African grey, African gray, Psittacus erithacus
+5: African hunting dog, hyena dog, Cape hunting dog, Lycaon pictus
+6: Airedale, Airedale terrier
+7: American Staffordshire terrier, Staffordshire terrier, American pit bull terrier, pit bull terrier
+8: American alligator, Alligator mississipiensis
+9: American black bear, black bear, Ursus americanus, Euarctos americanus
+10: American chameleon, anole, Anolis carolinensis
+11: American coot, marsh hen, mud hen, water hen, Fulica americana
+12: American egret, great white heron, Egretta albus
+13: American lobster, Northern lobster, Maine lobster, Homarus americanus
+14: Angora, Angora rabbit
+15: Appenzeller
+16: Arabian camel, dromedary, Camelus dromedarius
+17: Arctic fox, white fox, Alopex lagopus
+18: Australian terrier
+19: Band Aid
+20: Bedlington terrier
+21: Bernese mountain dog
+22: Blenheim spaniel
+23: Border collie
+24: Border terrier
+25: Boston bull, Boston terrier
+26: Bouvier des Flandres, Bouviers des Flandres
+27: Brabancon griffon
+28: Brittany spaniel
+29: CD player
+30: Cardigan, Cardigan Welsh corgi
+31: Chesapeake Bay retriever
+32: Chihuahua
+33: Christmas stocking
+34: Crock Pot
+35: Dandie Dinmont, Dandie Dinmont terrier
+36: Doberman, Doberman pinscher
+37: Dungeness crab, Cancer magister
+38: Dutch oven
+39: Egyptian cat
+40: English foxhound
+41: English setter
+42: English springer, English springer spaniel
+43: EntleBucher
+44: Eskimo dog, husky
+45: European fire salamander, Salamandra salamandra
+46: European gallinule, Porphyrio porphyrio
+47: French bulldog
+48: French horn, horn
+49: French loaf
+50: German shepherd, German shepherd dog, German police dog, alsatian
+51: German short-haired pointer
+52: Gila monster, Heloderma suspectum
+53: Gordon setter
+54: Granny Smith
+55: Great Dane
+56: Great Pyrenees
+57: Greater Swiss Mountain dog
+58: Ibizan hound, Ibizan Podenco
+59: Indian cobra, Naja naja
+60: Indian elephant, Elephas maximus
+61: Irish setter, red setter
+62: Irish terrier
+63: Irish water spaniel
+64: Irish wolfhound
+65: Italian greyhound
+66: Japanese spaniel
+67: Kerry blue terrier
+68: Komodo dragon, Komodo lizard, dragon lizard, giant lizard, Varanus komodoensis
+69: Labrador retriever
+70: Lakeland terrier
+71: Leonberg
+72: Lhasa, Lhasa apso
+73: Loafer
+74: Madagascar cat, ring-tailed lemur, Lemur catta
+75: Maltese dog, Maltese terrier, Maltese
+76: Mexican hairless
+77: Model T
+78: Newfoundland, Newfoundland dog
+79: Norfolk terrier
+80: Norwegian elkhound, elkhound
+81: Norwich terrier
+82: Old English sheepdog, bobtail
+83: Pekinese, Pekingese, Peke
+84: Pembroke, Pembroke Welsh corgi
+85: Persian cat
+86: Petri dish
+87: Polaroid camera, Polaroid Land camera
+88: Pomeranian
+89: Rhodesian ridgeback
+90: Rottweiler
+91: Saint Bernard, St Bernard
+92: Saluki, gazelle hound
+93: Samoyed, Samoyede
+94: Scotch terrier, Scottish terrier, Scottie
+95: Scottish deerhound, deerhound
+96: Sealyham terrier, Sealyham
+97: Shetland sheepdog, Shetland sheep dog, Shetland
+98: Shih-Tzu
+99: Siamese cat, Siamese
+100: Siberian husky
+101: Staffordshire bullterrier, Staffordshire bull terrier
+102: Sussex spaniel
+103: Tibetan mastiff
+104: Tibetan terrier, chrysanthemum dog
+105: Walker hound, Walker foxhound
+106: Weimaraner
+107: Welsh springer spaniel
+108: West Highland white terrier
+109: Windsor tie
+110: Yorkshire terrier
+111: abacus
+112: abaya
+113: academic gown, academic robe, judge's robe
+114: accordion, piano accordion, squeeze box
+115: acorn
+116: acorn squash
+117: acoustic guitar
+118: admiral
+119: affenpinscher, monkey pinscher, monkey dog
+120: agama
+121: agaric
+122: aircraft carrier, carrier, flattop, attack aircraft carrier
+123: airliner
+124: airship, dirigible
+125: albatross, mollymawk
+126: alligator lizard
+127: alp
+128: altar
+129: ambulance
+130: amphibian, amphibious vehicle
+131: analog clock
+132: anemone fish
+133: ant, emmet, pismire
+134: apiary, bee house
+135: apron
+136: armadillo
+137: artichoke, globe artichoke
+138: ashcan, trash can, garbage can, wastebin, ash bin, ash-bin, ashbin, dustbin, trash barrel, trash bin
+139: assault rifle, assault gun
+140: axolotl, mud puppy, Ambystoma mexicanum
+141: baboon
+142: backpack, back pack, knapsack, packsack, rucksack, haversack
+143: badger
+144: bagel, beigel
+145: bakery, bakeshop, bakehouse
+146: balance beam, beam
+147: bald eagle, American eagle, Haliaeetus leucocephalus
+148: balloon
+149: ballplayer, baseball player
+150: ballpoint, ballpoint pen, ballpen, Biro
+151: banana
+152: banded gecko
+153: banjo
+154: bannister, banister, balustrade, balusters, handrail
+155: barbell
+156: barber chair
+157: barbershop
+158: barn
+159: barn spider, Araneus cavaticus
+160: barometer
+161: barracouta, snoek
+162: barrel, cask
+163: barrow, garden cart, lawn cart, wheelbarrow
+164: baseball
+165: basenji
+166: basketball
+167: basset, basset hound
+168: bassinet
+169: bassoon
+170: bath towel
+171: bathing cap, swimming cap
+172: bathtub, bathing tub, bath, tub
+173: beach wagon, station wagon, wagon, estate car, beach waggon, station waggon, waggon
+174: beacon, lighthouse, beacon light, pharos
+175: beagle
+176: beaker
+177: bearskin, busby, shako
+178: beaver
+179: bee
+180: bee eater
+181: beer bottle
+182: beer glass
+183: bell cote, bell cot
+184: bell pepper
+185: bib
+186: bicycle-built-for-two, tandem bicycle, tandem
+187: bighorn, bighorn sheep, cimarron, Rocky Mountain bighorn, Rocky Mountain sheep, Ovis canadensis
+188: bikini, two-piece
+189: binder, ring-binder
+190: binoculars, field glasses, opera glasses
+191: birdhouse
+192: bison
+193: bittern
+194: black and gold garden spider, Argiope aurantia
+195: black grouse
+196: black stork, Ciconia nigra
+197: black swan, Cygnus atratus
+198: black widow, Latrodectus mactans
+199: black-and-tan coonhound
+200: black-footed ferret, ferret, Mustela nigripes
+201: bloodhound, sleuthhound
+202: bluetick
+203: boa constrictor, Constrictor constrictor
+204: boathouse
+205: bobsled, bobsleigh, bob
+206: bolete
+207: bolo tie, bolo, bola tie, bola
+208: bonnet, poke bonnet
+209: book jacket, dust cover, dust jacket, dust wrapper
+210: bookcase
+211: bookshop, bookstore, bookstall
+212: borzoi, Russian wolfhound
+213: bottlecap
+214: bow
+215: bow tie, bow-tie, bowtie
+216: box turtle, box tortoise
+217: boxer
+218: brain coral
+219: brambling, Fringilla montifringilla
+220: brass, memorial tablet, plaque
+221: brassiere, bra, bandeau
+222: breakwater, groin, groyne, mole, bulwark, seawall, jetty
+223: breastplate, aegis, egis
+224: briard
+225: broccoli
+226: broom
+227: brown bear, bruin, Ursus arctos
+228: bubble
+229: bucket, pail
+230: buckeye, horse chestnut, conker
+231: buckle
+232: bulbul
+233: bull mastiff
+234: bullet train, bullet
+235: bulletproof vest
+236: bullfrog, Rana catesbeiana
+237: burrito
+238: bustard
+239: butcher shop, meat market
+240: butternut squash
+241: cab, hack, taxi, taxicab
+242: cabbage butterfly
+243: cairn, cairn terrier
+244: caldron, cauldron
+245: can opener, tin opener
+246: candle, taper, wax light
+247: cannon
+248: canoe
+249: capuchin, ringtail, Cebus capucinus
+250: car mirror
+251: car wheel
+252: carbonara
+253: cardigan
+254: cardoon
+255: carousel, carrousel, merry-go-round, roundabout, whirligig
+256: carpenter's kit, tool kit
+257: carton
+258: cash machine, cash dispenser, automated teller machine, automatic teller machine, automated teller, automatic teller, ATM
+259: cassette
+260: cassette player
+261: castle
+262: catamaran
+263: cauliflower
+264: cello, violoncello
+265: cellular telephone, cellular phone, cellphone, cell, mobile phone
+266: centipede
+267: chain
+268: chain mail, ring mail, mail, chain armor, chain armour, ring armor, ring armour
+269: chain saw, chainsaw
+270: chainlink fence
+271: chambered nautilus, pearly nautilus, nautilus
+272: cheeseburger
+273: cheetah, chetah, Acinonyx jubatus
+274: chest
+275: chickadee
+276: chiffonier, commode
+277: chime, bell, gong
+278: chimpanzee, chimp, Pan troglodytes
+279: china cabinet, china closet
+280: chiton, coat-of-mail shell, sea cradle, polyplacophore
+281: chocolate sauce, chocolate syrup
+282: chow, chow chow
+283: church, church building
+284: cicada, cicala
+285: cinema, movie theater, movie theatre, movie house, picture palace
+286: cleaver, meat cleaver, chopper
+287: cliff dwelling
+288: cliff, drop, drop-off
+289: cloak
+290: clog, geta, patten, sabot
+291: clumber, clumber spaniel
+292: cock
+293: cocker spaniel, English cocker spaniel, cocker
+294: cockroach, roach
+295: cocktail shaker
+296: coffee mug
+297: coffeepot
+298: coho, cohoe, coho salmon, blue jack, silver salmon, Oncorhynchus kisutch
+299: coil, spiral, volute, whorl, helix
+300: collie
+301: colobus, colobus monkey
+302: combination lock
+303: comic book
+304: common iguana, iguana, Iguana iguana
+305: common newt, Triturus vulgaris
+306: computer keyboard, keypad
+307: conch
+308: confectionery, confectionary, candy store
+309: consomme
+310: container ship, containership, container vessel
+311: convertible
+312: coral fungus
+313: coral reef
+314: corkscrew, bottle screw
+315: corn
+316: cornet, horn, trumpet, trump
+317: coucal
+318: cougar, puma, catamount, mountain lion, painter, panther, Felis concolor
+319: cowboy boot
+320: cowboy hat, ten-gallon hat
+321: coyote, prairie wolf, brush wolf, Canis latrans
+322: cradle
+323: crane
+324: crash helmet
+325: crate
+326: crayfish, crawfish, crawdad, crawdaddy
+327: crib, cot
+328: cricket
+329: croquet ball
+330: crossword puzzle, crossword
+331: crutch
+332: cucumber, cuke
+333: cuirass
+334: cup
+335: curly-coated retriever
+336: custard apple
+337: daisy
+338: dalmatian, coach dog, carriage dog
+339: dam, dike, dyke
+340: damselfly
+341: desk
+342: desktop computer
+343: dhole, Cuon alpinus
+344: dial telephone, dial phone
+345: diamondback, diamondback rattlesnake, Crotalus adamanteus
+346: diaper, nappy, napkin
+347: digital clock
+348: digital watch
+349: dingo, warrigal, warragal, Canis dingo
+350: dining table, board
+351: dishrag, dishcloth
+352: dishwasher, dish washer, dishwashing machine
+353: disk brake, disc brake
+354: dock, dockage, docking facility
+355: dogsled, dog sled, dog sleigh
+356: dome
+357: doormat, welcome mat
+358: dough
+359: dowitcher
+360: dragonfly, darning needle, devil's darning needle, sewing needle, snake feeder, snake doctor, mosquito hawk, skeeter hawk
+361: drake
+362: drilling platform, offshore rig
+363: drum, membranophone, tympan
+364: drumstick
+365: dugong, Dugong dugon
+366: dumbbell
+367: dung beetle
+368: ear, spike, capitulum
+369: earthstar
+370: echidna, spiny anteater, anteater
+371: eel
+372: eft
+373: eggnog
+374: electric fan, blower
+375: electric guitar
+376: electric locomotive
+377: electric ray, crampfish, numbfish, torpedo
+378: entertainment center
+379: envelope
+380: espresso
+381: espresso maker
+382: face powder
+383: feather boa, boa
+384: fiddler crab
+385: fig
+386: file, file cabinet, filing cabinet
+387: fire engine, fire truck
+388: fire screen, fireguard
+389: fireboat
+390: flagpole, flagstaff
+391: flamingo
+392: flat-coated retriever
+393: flatworm, platyhelminth
+394: flute, transverse flute
+395: fly
+396: folding chair
+397: football helmet
+398: forklift
+399: fountain
+400: fountain pen
+401: four-poster
+402: fox squirrel, eastern fox squirrel, Sciurus niger
+403: freight car
+404: frilled lizard, Chlamydosaurus kingi
+405: frying pan, frypan, skillet
+406: fur coat
+407: gar, garfish, garpike, billfish, Lepisosteus osseus
+408: garbage truck, dustcart
+409: garden spider, Aranea diademata
+410: garter snake, grass snake
+411: gas pump, gasoline pump, petrol pump, island dispenser
+412: gasmask, respirator, gas helmet
+413: gazelle
+414: geyser
+415: giant panda, panda, panda bear, coon bear, Ailuropoda melanoleuca
+416: giant schnauzer
+417: gibbon, Hylobates lar
+418: go-kart
+419: goblet
+420: golden retriever
+421: goldfinch, Carduelis carduelis
+422: goldfish, Carassius auratus
+423: golf ball
+424: golfcart, golf cart
+425: gondola
+426: gong, tam-tam
+427: goose
+428: gorilla, Gorilla gorilla
+429: gown
+430: grand piano, grand
+431: grasshopper, hopper
+432: great grey owl, great gray owl, Strix nebulosa
+433: great white shark, white shark, man-eater, man-eating shark, Carcharodon carcharias
+434: green lizard, Lacerta viridis
+435: green mamba
+436: green snake, grass snake
+437: greenhouse, nursery, glasshouse
+438: grey fox, gray fox, Urocyon cinereoargenteus
+439: grey whale, gray whale, devilfish, Eschrichtius gibbosus, Eschrichtius robustus
+440: grille, radiator grille
+441: grocery store, grocery, food market, market
+442: groenendael
+443: groom, bridegroom
+444: ground beetle, carabid beetle
+445: guacamole
+446: guenon, guenon monkey
+447: guillotine
+448: guinea pig, Cavia cobaya
+449: gyromitra
+450: hair slide
+451: hair spray
+452: half track
+453: hammer
+454: hammerhead, hammerhead shark
+455: hamper
+456: hamster
+457: hand blower, blow dryer, blow drier, hair dryer, hair drier
+458: hand-held computer, hand-held microcomputer
+459: handkerchief, hankie, hanky, hankey
+460: hard disc, hard disk, fixed disk
+461: hare
+462: harmonica, mouth organ, harp, mouth harp
+463: harp
+464: hartebeest
+465: harvester, reaper
+466: harvestman, daddy longlegs, Phalangium opilio
+467: hatchet
+468: hay
+469: head cabbage
+470: hen
+471: hen-of-the-woods, hen of the woods, Polyporus frondosus, Grifola frondosa
+472: hermit crab
+473: hip, rose hip, rosehip
+474: hippopotamus, hippo, river horse, Hippopotamus amphibius
+475: hog, pig, grunter, squealer, Sus scrofa
+476: hognose snake, puff adder, sand viper
+477: holster
+478: home theater, home theatre
+479: honeycomb
+480: hook, claw
+481: hoopskirt, crinoline
+482: horizontal bar, high bar
+483: hornbill
+484: horned viper, cerastes, sand viper, horned asp, Cerastes cornutus
+485: horse cart, horse-cart
+486: hot pot, hotpot
+487: hotdog, hot dog, red hot
+488: hourglass
+489: house finch, linnet, Carpodacus mexicanus
+490: howler monkey, howler
+491: hummingbird
+492: hyena, hyaena
+493: iPod
+494: ibex, Capra ibex
+495: ice bear, polar bear, Ursus Maritimus, Thalarctos maritimus
+496: ice cream, icecream
+497: ice lolly, lolly, lollipop, popsicle
+498: impala, Aepyceros melampus
+499: indigo bunting, indigo finch, indigo bird, Passerina cyanea
+500: indri, indris, Indri indri, Indri brevicaudatus
+501: iron, smoothing iron
+502: isopod
+503: jacamar
+504: jack-o'-lantern
+505: jackfruit, jak, jack
+506: jaguar, panther, Panthera onca, Felis onca
+507: jay
+508: jean, blue jean, denim
+509: jeep, landrover
+510: jellyfish
+511: jersey, T-shirt, tee shirt
+512: jigsaw puzzle
+513: jinrikisha, ricksha, rickshaw
+514: joystick
+515: junco, snowbird
+516: keeshond
+517: kelpie
+518: killer whale, killer, orca, grampus, sea wolf, Orcinus orca
+519: kimono
+520: king crab, Alaska crab, Alaskan king crab, Alaska king crab, Paralithodes camtschatica
+521: king penguin, Aptenodytes patagonica
+522: king snake, kingsnake
+523: kit fox, Vulpes macrotis
+524: kite
+525: knee pad
+526: knot
+527: koala, koala bear, kangaroo bear, native bear, Phascolarctos cinereus
+528: komondor
+529: kuvasz
+530: lab coat, laboratory coat
+531: lacewing, lacewing fly
+532: ladle
+533: ladybug, ladybeetle, lady beetle, ladybird, ladybird beetle
+534: lakeside, lakeshore
+535: lampshade, lamp shade
+536: langur
+537: laptop, laptop computer
+538: lawn mower, mower
+539: leaf beetle, chrysomelid
+540: leafhopper
+541: leatherback turtle, leatherback, leathery turtle, Dermochelys coriacea
+542: lemon
+543: lens cap, lens cover
+544: leopard, Panthera pardus
+545: lesser panda, red panda, panda, bear cat, cat bear, Ailurus fulgens
+546: letter opener, paper knife, paperknife
+547: library
+548: lifeboat
+549: lighter, light, igniter, ignitor
+550: limousine, limo
+551: limpkin, Aramus pictus
+552: liner, ocean liner
+553: lion, king of beasts, Panthera leo
+554: lionfish
+555: lipstick, lip rouge
+556: little blue heron, Egretta caerulea
+557: llama
+558: loggerhead, loggerhead turtle, Caretta caretta
+559: long-horned beetle, longicorn, longicorn beetle
+560: lorikeet
+561: lotion
+562: loudspeaker, speaker, speaker unit, loudspeaker system, speaker system
+563: loupe, jeweler's loupe
+564: lumbermill, sawmill
+565: lycaenid, lycaenid butterfly
+566: lynx, catamount
+567: macaque
+568: macaw
+569: magnetic compass
+570: magpie
+571: mailbag, postbag
+572: mailbox, letter box
+573: maillot
+574: maillot, tank suit
+575: malamute, malemute, Alaskan malamute
+576: malinois
+577: manhole cover
+578: mantis, mantid
+579: maraca
+580: marimba, xylophone
+581: marmoset
+582: marmot
+583: mashed potato
+584: mask
+585: matchstick
+586: maypole
+587: maze, labyrinth
+588: measuring cup
+589: meat loaf, meatloaf
+590: medicine chest, medicine cabinet
+591: meerkat, mierkat
+592: megalith, megalithic structure
+593: menu
+594: microphone, mike
+595: microwave, microwave oven
+596: military uniform
+597: milk can
+598: miniature pinscher
+599: miniature poodle
+600: miniature schnauzer
+601: minibus
+602: miniskirt, mini
+603: minivan
+604: mink
+605: missile
+606: mitten
+607: mixing bowl
+608: mobile home, manufactured home
+609: modem
+610: monarch, monarch butterfly, milkweed butterfly, Danaus plexippus
+611: monastery
+612: mongoose
+613: monitor
+614: moped
+615: mortar
+616: mortarboard
+617: mosque
+618: mosquito net
+619: motor scooter, scooter
+620: mountain bike, all-terrain bike, off-roader
+621: mountain tent
+622: mouse, computer mouse
+623: mousetrap
+624: moving van
+625: mud turtle
+626: mushroom
+627: muzzle
+628: nail
+629: neck brace
+630: necklace
+631: nematode, nematode worm, roundworm
+632: night snake, Hypsiglena torquata
+633: nipple
+634: notebook, notebook computer
+635: obelisk
+636: oboe, hautboy, hautbois
+637: ocarina, sweet potato
+638: odometer, hodometer, mileometer, milometer
+639: oil filter
+640: orange
+641: orangutan, orang, orangutang, Pongo pygmaeus
+642: organ, pipe organ
+643: oscilloscope, scope, cathode-ray oscilloscope, CRO
+644: ostrich, Struthio camelus
+645: otter
+646: otterhound, otter hound
+647: overskirt
+648: ox
+649: oxcart
+650: oxygen mask
+651: oystercatcher, oyster catcher
+652: packet
+653: paddle, boat paddle
+654: paddlewheel, paddle wheel
+655: padlock
+656: paintbrush
+657: pajama, pyjama, pj's, jammies
+658: palace
+659: panpipe, pandean pipe, syrinx
+660: paper towel
+661: papillon
+662: parachute, chute
+663: parallel bars, bars
+664: park bench
+665: parking meter
+666: partridge
+667: passenger car, coach, carriage
+668: patas, hussar monkey, Erythrocebus patas
+669: patio, terrace
+670: pay-phone, pay-station
+671: peacock
+672: pedestal, plinth, footstall
+673: pelican
+674: pencil box, pencil case
+675: pencil sharpener
+676: perfume, essence
+677: photocopier
+678: pick, plectrum, plectron
+679: pickelhaube
+680: picket fence, paling
+681: pickup, pickup truck
+682: pier
+683: piggy bank, penny bank
+684: pill bottle
+685: pillow
+686: pineapple, ananas
+687: ping-pong ball
+688: pinwheel
+689: pirate, pirate ship
+690: pitcher, ewer
+691: pizza, pizza pie
+692: plane, carpenter's plane, woodworking plane
+693: planetarium
+694: plastic bag
+695: plate
+696: plate rack
+697: platypus, duckbill, duckbilled platypus, duck-billed platypus, Ornithorhynchus anatinus
+698: plow, plough
+699: plunger, plumber's helper
+700: pole
+701: polecat, fitch, foulmart, foumart, Mustela putorius
+702: police van, police wagon, paddy wagon, patrol wagon, wagon, black Maria
+703: pomegranate
+704: poncho
+705: pool table, billiard table, snooker table
+706: pop bottle, soda bottle
+707: porcupine, hedgehog
+708: pot, flowerpot
+709: potpie
+710: potter's wheel
+711: power drill
+712: prairie chicken, prairie grouse, prairie fowl
+713: prayer rug, prayer mat
+714: pretzel
+715: printer
+716: prison, prison house
+717: proboscis monkey, Nasalis larvatus
+718: projectile, missile
+719: projector
+720: promontory, headland, head, foreland
+721: ptarmigan
+722: puck, hockey puck
+723: puffer, pufferfish, blowfish, globefish
+724: pug, pug-dog
+725: punching bag, punch bag, punching ball, punchball
+726: purse
+727: quail
+728: quill, quill pen
+729: quilt, comforter, comfort, puff
+730: racer, race car, racing car
+731: racket, racquet
+732: radiator
+733: radio telescope, radio reflector
+734: radio, wireless
+735: rain barrel
+736: ram, tup
+737: rapeseed
+738: recreational vehicle, RV, R.V.
+739: red fox, Vulpes vulpes
+740: red wine
+741: red wolf, maned wolf, Canis rufus, Canis niger
+742: red-backed sandpiper, dunlin, Erolia alpina
+743: red-breasted merganser, Mergus serrator
+744: redbone
+745: redshank, Tringa totanus
+746: reel
+747: reflex camera
+748: refrigerator, icebox
+749: remote control, remote
+750: restaurant, eating house, eating place, eatery
+751: revolver, six-gun, six-shooter
+752: rhinoceros beetle
+753: rifle
+754: ringlet, ringlet butterfly
+755: ringneck snake, ring-necked snake, ring snake
+756: robin, American robin, Turdus migratorius
+757: rock beauty, Holocanthus tricolor
+758: rock crab, Cancer irroratus
+759: rock python, rock snake, Python sebae
+760: rocking chair, rocker
+761: rotisserie
+762: rubber eraser, rubber, pencil eraser
+763: ruddy turnstone, Arenaria interpres
+764: ruffed grouse, partridge, Bonasa umbellus
+765: rugby ball
+766: rule, ruler
+767: running shoe
+768: safe
+769: safety pin
+770: saltshaker, salt shaker
+771: sandal
+772: sandbar, sand bar
+773: sarong
+774: sax, saxophone
+775: scabbard
+776: scale, weighing machine
+777: schipperke
+778: school bus
+779: schooner
+780: scoreboard
+781: scorpion
+782: screen, CRT screen
+783: screw
+784: screwdriver
+785: scuba diver
+786: sea anemone, anemone
+787: sea cucumber, holothurian
+788: sea lion
+789: sea slug, nudibranch
+790: sea snake
+791: sea urchin
+792: seashore, coast, seacoast, sea-coast
+793: seat belt, seatbelt
+794: sewing machine
+795: shield, buckler
+796: shoe shop, shoe-shop, shoe store
+797: shoji
+798: shopping basket
+799: shopping cart
+800: shovel
+801: shower cap
+802: shower curtain
+803: siamang, Hylobates syndactylus, Symphalangus syndactylus
+804: sidewinder, horned rattlesnake, Crotalus cerastes
+805: silky terrier, Sydney silky
+806: ski
+807: ski mask
+808: skunk, polecat, wood pussy
+809: sleeping bag
+810: slide rule, slipstick
+811: sliding door
+812: slot, one-armed bandit
+813: sloth bear, Melursus ursinus, Ursus ursinus
+814: slug
+815: snail
+816: snorkel
+817: snow leopard, ounce, Panthera uncia
+818: snowmobile
+819: snowplow, snowplough
+820: soap dispenser
+821: soccer ball
+822: sock
+823: soft-coated wheaten terrier
+824: solar dish, solar collector, solar furnace
+825: sombrero
+826: sorrel
+827: soup bowl
+828: space bar
+829: space heater
+830: space shuttle
+831: spaghetti squash
+832: spatula
+833: speedboat
+834: spider monkey, Ateles geoffroyi
+835: spider web, spider's web
+836: spindle
+837: spiny lobster, langouste, rock lobster, crawfish, crayfish, sea crawfish
+838: spoonbill
+839: sports car, sport car
+840: spotlight, spot
+841: spotted salamander, Ambystoma maculatum
+842: squirrel monkey, Saimiri sciureus
+843: stage
+844: standard poodle
+845: standard schnauzer
+846: starfish, sea star
+847: steam locomotive
+848: steel arch bridge
+849: steel drum
+850: stethoscope
+851: stingray
+852: stinkhorn, carrion fungus
+853: stole
+854: stone wall
+855: stopwatch, stop watch
+856: stove
+857: strainer
+858: strawberry
+859: street sign
+860: streetcar, tram, tramcar, trolley, trolley car
+861: stretcher
+862: studio couch, day bed
+863: stupa, tope
+864: sturgeon
+865: submarine, pigboat, sub, U-boat
+866: suit, suit of clothes
+867: sulphur butterfly, sulfur butterfly
+868: sulphur-crested cockatoo, Kakatoe galerita, Cacatua galerita
+869: sundial
+870: sunglass
+871: sunglasses, dark glasses, shades
+872: sunscreen, sunblock, sun blocker
+873: suspension bridge
+874: swab, swob, mop
+875: sweatshirt
+876: swimming trunks, bathing trunks
+877: swing
+878: switch, electric switch, electrical switch
+879: syringe
+880: tabby, tabby cat
+881: table lamp
+882: tailed frog, bell toad, ribbed toad, tailed toad, Ascaphus trui
+883: tank, army tank, armored combat vehicle, armoured combat vehicle
+884: tape player
+885: tarantula
+886: teapot
+887: teddy, teddy bear
+888: television, television system
+889: tench, Tinca tinca
+890: tennis ball
+891: terrapin
+892: thatch, thatched roof
+893: theater curtain, theatre curtain
+894: thimble
+895: three-toed sloth, ai, Bradypus tridactylus
+896: thresher, thrasher, threshing machine
+897: throne
+898: thunder snake, worm snake, Carphophis amoenus
+899: tick
+900: tiger beetle
+901: tiger cat
+902: tiger shark, Galeocerdo cuvieri
+903: tiger, Panthera tigris
+904: tile roof
+905: timber wolf, grey wolf, gray wolf, Canis lupus
+906: titi, titi monkey
+907: toaster
+908: tobacco shop, tobacconist shop, tobacconist
+909: toilet seat
+910: toilet tissue, toilet paper, bathroom tissue
+911: torch
+912: totem pole
+913: toucan
+914: tow truck, tow car, wrecker
+915: toy poodle
+916: toy terrier
+917: toyshop
+918: tractor
+919: traffic light, traffic signal, stoplight
+920: trailer truck, tractor trailer, trucking rig, rig, articulated lorry, semi
+921: tray
+922: tree frog, tree-frog
+923: trench coat
+924: triceratops
+925: tricycle, trike, velocipede
+926: trifle
+927: trilobite
+928: trimaran
+929: tripod
+930: triumphal arch
+931: trolleybus, trolley coach, trackless trolley
+932: trombone
+933: tub, vat
+934: turnstile
+935: tusker
+936: typewriter keyboard
+937: umbrella
+938: unicycle, monocycle
+939: upright, upright piano
+940: vacuum, vacuum cleaner
+941: valley, vale
+942: vase
+943: vault
+944: velvet
+945: vending machine
+946: vestment
+947: viaduct
+948: vine snake
+949: violin, fiddle
+950: vizsla, Hungarian pointer
+951: volcano
+952: volleyball
+953: vulture
+954: waffle iron
+955: walking stick, walkingstick, stick insect
+956: wall clock
+957: wallaby, brush kangaroo
+958: wallet, billfold, notecase, pocketbook
+959: wardrobe, closet, press
+960: warplane, military plane
+961: warthog
+962: washbasin, handbasin, washbowl, lavabo, wash-hand basin
+963: washer, automatic washer, washing machine
+964: water bottle
+965: water buffalo, water ox, Asiatic buffalo, Bubalus bubalis
+966: water jug
+967: water ouzel, dipper
+968: water snake
+969: water tower
+970: weasel
+971: web site, website, internet site, site
+972: weevil
+973: whippet
+974: whiptail, whiptail lizard
+975: whiskey jug
+976: whistle
+977: white stork, Ciconia ciconia
+978: white wolf, Arctic wolf, Canis lupus tundrarum
+979: wig
+980: wild boar, boar, Sus scrofa
+981: window screen
+982: window shade
+983: wine bottle
+984: wing
+985: wire-haired fox terrier
+986: wok
+987: wolf spider, hunting spider
+988: wombat
+989: wood rabbit, cottontail, cottontail rabbit
+990: wooden spoon
+991: wool, woolen, woollen
+992: worm fence, snake fence, snake-rail fence, Virginia fence
+993: wreck
+994: yawl
+995: yellow lady's slipper, yellow lady-slipper, Cypripedium calceolus, Cypripedium parviflorum
+996: yurt
+997: zebra
+998: zucchini, courgette

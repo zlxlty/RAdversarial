@@ -1,5 +1,4 @@
-docker run  --gpus all \
-    --user $(id -u):$(id -g) \
+docker run --gpus all \
     --ipc=host --ulimit memlock=-1 \
     --ulimit stack=67108864 \
     -it \

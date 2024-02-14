@@ -7,6 +7,7 @@ from torchvision import transforms, models
 import requests
 from torchvision import transforms
 from typing import *
+from .utils import id2label, label2id
 
 class TargetModel():
     def __init__(self, device: str):
@@ -17,6 +18,9 @@ class TargetModel():
     
     def preprocess(self, image: Image.Image) -> torch.Tensor:
         pass
+    
+    def normalize(self, x, mean: torch.Tensor, std: torch.Tensor) -> torch.Tensor:
+        return transforms.Normalize(mean, std)(x)
     
     def predict(self, inputs: torch.Tensor) -> Dict[str, Any]:
         pass
@@ -36,11 +40,10 @@ class Resnet50Model(TargetModel):
         
         return transform(image).unsqueeze(0).to(self.device)
     
-    def predict(self, inputs: torch.Tensor) -> Dict[str, Any]:
-        def norm(x, mean, std):
-            return (x - mean.type_as(x)[None,:,None,None]) / std.type_as(x)[None,:,None,None]
 
-        outputs = self.model(norm(
+    
+    def predict(self, inputs: torch.Tensor) -> Dict[str, Any]:
+        outputs = self.model(self.normalize(
             inputs, 
             torch.Tensor([0.485, 0.456, 0.406]), 
             torch.Tensor([0.229, 0.224, 0.225])
@@ -49,17 +52,41 @@ class Resnet50Model(TargetModel):
     
 class SurrogateModel(TargetModel):
     def __init__(self, device: str):
-        self.model = torch.load("/surrogate_model.pth").to(device)
-
+        super().__init__(device)
+        self.model = torch.load("./classifiers/pretrained_model/surrogate_30.pth").to(device)
+        self.load_label_dict()
+    
     def preprocess(self, image: Image.Image) -> torch.Tensor:
-        transforms = transforms.Compose([
-            transforms.Resize(227),
+        transform = transforms.Compose([
+            transforms.Resize((227, 227)),
             transforms.ToTensor(),
         ])
-        return transforms(image).unsqueeze(0).to(self.device)
+        return transform(image).unsqueeze(0).to(self.device)
     
+    def load_label_dict(self) -> int:
+        f = open("./classifiers/pretrained_model/label_ids.txt", "r")
+        lines = f.readlines()
+        f.close()
+        self.label_dict = {}
+        for line in lines:
+            g = line.strip().split(": ")
+            id_num = int(g[0])
+            label = g[1]
+            self.label_dict[id_num] = label
+                
     def predict(self, inputs: torch.Tensor) -> Dict[str, Any]:
-        return super().predict(inputs)
+        outputs = self.model(self.normalize(
+            inputs,
+            torch.Tensor([0.5, 0.5, 0.5]),
+            torch.Tensor([0.5, 0.5, 0.5])
+        ))
+        
+        remapped_outputs = outputs.clone()
+        for i in range(999):
+            remapped_outputs[0][label2id(self.label_dict[i])] = outputs[0][i]
+        
+        
+        return remapped_outputs
     
 class MobileViTModel(TargetModel):
     def __init__(self, device: str):
@@ -83,9 +110,10 @@ class MobileViTModel(TargetModel):
 def get_target_model(model_name: str, device: str) -> TargetModel:
     if model_name == "MobileViT":
         model = MobileViTModel(device)
-    elif model_name == "Resnet50":
+    elif model_name == "ResNet50":
         model = Resnet50Model(device)
-        
+    elif model_name == "Surrogate":
+        model = SurrogateModel(device)
     else:
         raise ValueError(f"model_name {model_name} not supported")
     
