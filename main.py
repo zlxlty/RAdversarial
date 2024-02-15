@@ -56,14 +56,14 @@ attack_methods = {
 Choose the target models and attack methods here.
 '''
 TARGET_MODEL = [
-    "MobileViT", 
-    # "Surrogate", 
-    "ResNet50"
+    # "MobileViT", 
+    "Surrogate", 
+    # "ResNet50"
 ]
 METHOD_NAMES = [
-    "PGD", 
-    "FGSM", 
-    # "NO"
+    # "PGD", 
+    # "FGSM", 
+    "NO"
 ]
 
 if __name__ == '__main__':

@@ -40,11 +40,15 @@ class AttackMethod():
         # Surrogate models are evaluated on the true target model (MobileViT)
         if true_target_model != None:
             self.model = true_target_model
+            org_img_tensor = F.interpolate(org_img_tensor, size=(256, 256), mode='bilinear', align_corners=False)
             self.perturbed_input = F.interpolate(org_img_tensor, size=(256, 256), mode='bilinear', align_corners=False)
             self.logit = self.model.predict(self.perturbed_input)
         
         # Original Image Prob
         pred = self.model.predict(org_img_tensor)
+        
+        # get top 1 prediction from pred
+        self.original_top1_index = torch.argmax(pred, dim=1).item()
         self.original_prediction_result = nn.Softmax(dim=1)(pred)[0, true_label_idx].item()
         
         # # Top 1 accuracy
@@ -83,6 +87,7 @@ class AttackMethod():
             "input_name": input_name,
             "true_label": id2label(true_label_idx),
             "true_label_idx": true_label_idx,
+            "original_top1_index": self.original_top1_index,
             "original_true_class_probability": self.original_prediction_result,
             "true_class_probability": self.true_class_probability,
             "topk_indices": self.topk_indices,
