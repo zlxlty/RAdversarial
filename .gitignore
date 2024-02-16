@@ -171,3 +171,5 @@ images/
 
 /images
 *.pth
+
+/benchmark*
