@@ -11,8 +11,7 @@ def getAttackSuccessRate(filename):
             baseSuccess += 1
         if result["true_label_idx"] != result["topk_indices"][0]:
             top1Success += 1
-        else:
-            print(result["input_name"])
+        
         if not result["true_label_idx"] in result["topk_indices"]:
             topKSuccess += 1
     print("Base success num:", baseSuccess)
@@ -28,4 +27,4 @@ def getAttackSuccessRate(filename):
     return baseSuccessRate, top1SuccessRate, topKSuccessRate
 
 if __name__ == "__main__":
-    getAttackSuccessRate("./FGSM/FGSM_MobileViT.json")
+    getAttackSuccessRate("./PGD/PGD_ResNet50.json")
