@@ -61,7 +61,7 @@ attack_methods = {
 Choose the target models and attack methods here.
 '''
 TARGET_MODEL = [
-    # "MobileViT", 
+    "MobileViT", 
     # "Surrogate", 
     "ResNet50"
 ]

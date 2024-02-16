@@ -2,7 +2,7 @@
 # Fraction is represented as [numerator, denominator] list
 ---
 epsilon:
-  - 1.0
+  - 64.0
   - 255.0
 num_iter: 1
 targeted: False
