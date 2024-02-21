@@ -53,7 +53,7 @@ class Resnet50Model(TargetModel):
 class SurrogateModel(TargetModel):
     def __init__(self, device: str):
         super().__init__(device)
-        self.model = torch.load("./classifiers/pretrained_model/surrogate_30.pth").to(device)
+        self.model = torch.load("./classifiers/pretrained_model/surrogate_35.pth").to(device)
         self.load_label_dict()
     
     def preprocess(self, image: Image.Image) -> torch.Tensor:

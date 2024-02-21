@@ -48,7 +48,7 @@ class AttackMethod:
                 org_img_tensor, size=(256, 256), mode="bilinear", align_corners=False
             )
             self.perturbed_input = F.interpolate(
-                org_img_tensor, size=(256, 256), mode="bilinear", align_corners=False
+                self.perturbed_input, size=(256, 256), mode="bilinear", align_corners=False
             )
             self.logit = self.model.predict(self.perturbed_input)
 
