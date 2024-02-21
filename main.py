@@ -1,12 +1,10 @@
-from classifiers import get_target_model, label2id, VGG16
-from attacks import PGDMethod, FGSMMethod, NoMethod
 from PIL import Image
 import torch
 import os
 
 from defines import IMAGE_PATH, EVAL_PATH, CONFIG_PATH, DATASET_PATH
 from classifiers import get_target_model, label2id
-from attacks import PGDMethod, FGSMMethod, LocSearchAdv, NoMethod
+from attacks import PGDMethod, FGSMMethod, NoMethod, LocSearchAdv
 
 
 # values are standard normalization for ImageNet images, 
@@ -39,21 +37,13 @@ def create_dir(dir):
         os.makedirs(dir)
 
 attack_methods = {
-    "LocSearchAdv": {
-        "config": f"{CONFIG_PATH}/locsearchadv.yaml",
+    "LocSearchAdv_new": {
+        "config": f"{CONFIG_PATH}/locsearchadv_new.yaml",
         "method": LocSearchAdv
     },
-    "FGSM": {
-        "config": f"{CONFIG_PATH}/fgsm.yaml",
-        "method": FGSMMethod
-    },
-    "PGD": {
-        "config": f"{CONFIG_PATH}/pgd.yaml",
-        "method": PGDMethod
-    },
-    "NO": {
-        "config": f"{CONFIG_PATH}/no.yaml",
-        "method": NoMethod
+    "LocSearchAdv_old": {
+        "config": f"{CONFIG_PATH}/locsearchadv_old.yaml",
+        "method": LocSearchAdv
     },
 }
 
@@ -61,12 +51,15 @@ attack_methods = {
 Choose the target models and attack methods here.
 '''
 TARGET_MODEL = [
-    # "MobileViT", 
+    "MobileViT", 
     # "Surrogate", 
-    "ResNet50"
+    # "ResNet50"
 ]
 METHOD_NAMES = [
-    "LocSearchAdv"
+    "LocSearchAdv",
+    "FGSM",
+    "PGD",
+    "NO"
 ]
 
 if __name__ == '__main__':
@@ -81,9 +74,10 @@ if __name__ == '__main__':
         
         attack = attack_methods[method_name]
         config_path = attack["config"]
-        image_data_generator = generate_image_data(skip=13)
-        img_dir = f"{IMAGE_PATH}/{method_name}"
-        eval_dir = f"{EVAL_PATH}/{method_name}"
+        image_data_generator = generate_image_data()
+        
+        img_dir = f"{IMAGE_PATH}/NonImageNet/{method_name}_{model_name}"
+        eval_dir = f"{EVAL_PATH}/NonImageNet/{method_name}_{model_name}"
         create_dir(img_dir)
         create_dir(eval_dir)
         image_processed = 0
@@ -97,7 +91,7 @@ if __name__ == '__main__':
             attack["method"](target_model, config_path)\
                 .do_perturbation(input_tensor, true_label_idx)\
                 .do_eval(input_tensor, true_label_idx, 5, true_target_model)\
-                .save_eval_to_json(image_name, true_label_idx, f"{EVAL_PATH}/{method_name}/{method_name}_{model_name}.json")\
+                .save_eval_to_json(image_name, true_label_idx, f"{eval_dir}/{method_name}_{model_name}.json")\
                 .save_perturbation_to_png(f"{img_dir}/perturbed_{image_name}.png")\
 
             image_processed += 1

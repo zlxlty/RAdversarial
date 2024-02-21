@@ -7,9 +7,10 @@ EVAL_PATH = f'{ROOT_DIR}/evals'
 IMAGE_PATH = f'{ROOT_DIR}/images'
 CONFIG_PATH = f'{ROOT_DIR}/attacks/config'
 CACHE_PATH = f'{ROOT_DIR}/.cache'
-DATASET_PATH = f'/dataset/benchmark'
+DATASET_PATH = f'/dataset/benchmark1000rand'
 
 if not os.path.exists(CACHE_PATH):
     os.makedirs(CACHE_PATH)
 
 os.environ["HF_HOME"] = CACHE_PATH
+os.environ['TORCH_HOME'] = f'{CACHE_PATH}/.torch'
