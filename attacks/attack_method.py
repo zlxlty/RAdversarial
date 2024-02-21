@@ -1,7 +1,8 @@
-import torch
 from PIL import Image
 import cv2
+import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 import os
 import sys
@@ -9,11 +10,12 @@ import sys
 import yaml
 sys.path.append("..")
 from classifiers import TargetModel, label2id, id2label
+from .utils import create_folders
 
 class AttackMethod():
     def __init__(self, model: TargetModel, config_file: str):
         self.model = model
-        self.perturbated_input = None
+        self.perturbed_input = None
         self.logit = None
         self.number_iteration = None
         
@@ -28,15 +30,25 @@ class AttackMethod():
         '''
         raise NotImplementedError
     
-    def do_eval(self, org_img_tensor: torch.Tensor, true_label_idx: int, topk: int = 5) -> 'AttackMethod':
+    def do_eval(self, org_img_tensor: torch.Tensor, true_label_idx: int, topk: int = 5, true_target_model = None) -> 'AttackMethod':    
         if self.logit is None:
             raise Exception("Must call do_perturbation first")
         
         if topk < 1 or topk > 5:
             raise Exception("topk must be between 1 and 5")
         
+        # Surrogate models are evaluated on the true target model (MobileViT)
+        if true_target_model != None:
+            self.model = true_target_model
+            org_img_tensor = F.interpolate(org_img_tensor, size=(256, 256), mode='bilinear', align_corners=False)
+            self.perturbed_input = F.interpolate(org_img_tensor, size=(256, 256), mode='bilinear', align_corners=False)
+            self.logit = self.model.predict(self.perturbed_input)
+        
         # Original Image Prob
         pred = self.model.predict(org_img_tensor)
+        
+        # get top 1 prediction from pred
+        self.original_top1_index = torch.argmax(pred, dim=1).item()
         self.original_prediction_result = nn.Softmax(dim=1)(pred)[0, true_label_idx].item()
         
         # # Top 1 accuracy
@@ -48,8 +60,8 @@ class AttackMethod():
         topk_indices = [topk_indices] if topk == 1 else topk_indices
         topk_labels = [id2label(idx) for idx in topk_indices]
         topk_probabilities = nn.Softmax(dim=1)(self.logit)[0, topk_indices].tolist()
-        print("Predicted top 5 classes: ", topk_labels)
-        print("Predicted top 5 probabilities:", topk_probabilities)
+        print(f"Predicted top {topk} classes: ", topk_labels)
+        print(f"Predicted top {topk} probabilities:", topk_probabilities)
         
         self.topk_indices = topk_indices
         self.topk_labels = topk_labels
@@ -67,11 +79,15 @@ class AttackMethod():
         if filename[-5:] != ".json":
             raise Exception("Filename must end with .json")
         
+        create_folders(filename)
+        
         import json
         
         json_dict = {
             "input_name": input_name,
+            "true_label": id2label(true_label_idx),
             "true_label_idx": true_label_idx,
+            "original_top1_index": self.original_top1_index,
             "original_true_class_probability": self.original_prediction_result,
             "true_class_probability": self.true_class_probability,
             "topk_indices": self.topk_indices,
@@ -106,6 +122,8 @@ class AttackMethod():
         if filename[-5:] != ".json":
             raise Exception("Filename must end with .json")
         
+        create_folders(filename)
+        
         import json
         
         json_dict = {
@@ -123,6 +141,8 @@ class AttackMethod():
         
         if filename[-4:] != ".png":
             raise Exception("Filename must end with .png")
+        
+        create_folders(filename)
 
         final_image = self.perturbed_input.squeeze().detach().cpu()  # Remove the batch dimension and move to CPU
         rgb_image = cv2.cvtColor(((final_image)*255).detach().numpy().transpose(1, 2, 0), cv2.COLOR_BGR2RGB)
