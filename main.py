@@ -43,10 +43,10 @@ def create_dir(dir):
 
 
 attack_methods = {
-    "LocSearchAdv_new": {
-        "config": f"{CONFIG_PATH}/locsearchadv_new.yaml",
-        "method": LocSearchAdv
-    },
+    # "LocSearchAdv_new": {
+    #     "config": f"{CONFIG_PATH}/locsearchadv_new.yaml",
+    #     "method": LocSearchAdv
+    # },
     "LocSearchAdv_old": {
         "config": f"{CONFIG_PATH}/locsearchadv_old.yaml",
         "method": LocSearchAdv},
@@ -59,9 +59,9 @@ attack_methods = {
 Choose the target models and attack methods here.
 """
 TARGET_MODEL = [
-    "MobileViT", 
+    # "MobileViT", 
     # "Surrogate", 
-    # "ResNet50"
+    "ResNet50"
 ]
 METHOD_NAMES = [
     "LocSearchAdv",
@@ -89,8 +89,8 @@ if __name__ == "__main__":
         config_path = attack["config"]
         image_data_generator = generate_image_data()
         
-        img_dir = f"{IMAGE_PATH}/NonImageNet/{method_name}_{model_name}"
-        eval_dir = f"{EVAL_PATH}/NonImageNet/{method_name}_{model_name}"
+        img_dir = f"{IMAGE_PATH}/unfilered/{method_name}_{model_name}"
+        eval_dir = f"{EVAL_PATH}/unfilered/{method_name}_{model_name}"
         create_dir(img_dir)
         create_dir(eval_dir)
         
