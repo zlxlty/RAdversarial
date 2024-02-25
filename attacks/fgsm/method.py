@@ -20,7 +20,7 @@ class FGSMMethod(AttackMethod):
         label_tensor = torch.LongTensor([true_label_idx]).to(self.model.getDevice())
 
         # Calculate the loss
-        loss = -nn.CrossEntropyLoss()(logit, label_tensor)
+        loss = nn.CrossEntropyLoss()(logit, label_tensor)
 
         # Zero all existing gradients
         self.model.model.zero_grad()
