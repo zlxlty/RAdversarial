@@ -10,7 +10,7 @@ import sys
 import yaml
 
 sys.path.append("..")
-from classifiers import TargetModel, label2id, id2label
+from classifiers import TargetModel, label2id, id2label, MobileViTModel
 from .utils import create_folders
 
 
@@ -160,9 +160,11 @@ class AttackMethod:
         final_image = (
             self.perturbed_input.squeeze().detach().cpu()
         )  # Remove the batch dimension and move to CPU
+        rgb_image = ((final_image) * 255).detach().numpy().transpose(1, 2, 0)
         rgb_image = cv2.cvtColor(
-            ((final_image) * 255).detach().numpy().transpose(1, 2, 0), cv2.COLOR_BGR2RGB
-        )
+            rgb_image,
+            cv2.COLOR_BGR2RGB
+        ) if isinstance(self.model, MobileViTModel) else rgb_image
 
         # Convert the numpy array to a PIL image
         pil_image = Image.fromarray(rgb_image.astype("uint8"))
