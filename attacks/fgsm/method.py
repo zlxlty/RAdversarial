@@ -8,6 +8,7 @@ from .. import AttackMethod
 class FGSMMethod(AttackMethod):
     def do_perturbation(self, input_tensor, true_label_idx) -> AttackMethod:
         epsilon = self.param_config["epsilon"][0] /  self.param_config["epsilon"][1]
+        self.epsilon = self.param_config["epsilon"]
         
         input_tensor.requires_grad = True
         

@@ -8,6 +8,7 @@ class PGDMethod(AttackMethod):
     def do_perturbation(self, input_tensor, true_label_idx) -> AttackMethod:
         ## Get attack config
         epsilon = self.param_config["epsilon"][0] /  self.param_config["epsilon"][1]
+        self.epsilon = self.param_config["epsilon"]
         num_iteration = self.param_config["num_iter"]
         
         torch.manual_seed("2024")

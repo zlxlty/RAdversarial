@@ -124,6 +124,8 @@ class LocSearchAdv(AttackMethod):
             i = 0
             P_X_perturbed, P_Y_perturbed = [], []
             while num_perturbed < t:  
+                if i == len(P_XI):
+                    break
                 x, y = P_XI[i], P_YI[i]
                 if ((x, y) in pts_perturbed):
                     i += 1
@@ -154,7 +156,7 @@ class LocSearchAdv(AttackMethod):
             
             ## Update neighborhood of pixel location for next round
             P_X, P_Y = [], []
-            for i in range (t):
+            for i in range (num_perturbed):
                 x, y = P_X_perturbed[i], P_Y_perturbed[i]                
                 for row in range(-d, d+1):
                     for col in range(-d, d+1):
@@ -165,6 +167,9 @@ class LocSearchAdv(AttackMethod):
                             P_Y.append(new_y)
             P_X = np.array(P_X)    
             P_Y = np.array(P_Y)   
+            
+            if len(P_X) == len(P_Y) == 0:
+                break
 
         
         return self

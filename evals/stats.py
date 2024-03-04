@@ -1,4 +1,5 @@
 import json
+import os
 
 def getAttackSuccessRate(filename):
     with open(filename, 'r') as f:
@@ -14,28 +15,29 @@ def getAttackSuccessRate(filename):
         
             if not result["true_label_idx"] in result["topk_indices"]:
                 topKSuccess += 1
-    print("Base success num:", baseSuccess)
-    print("Base failed num:", len(result_list) - baseSuccess)
-    print("Top 1 success num:", top1Success)
-    print("Top K success num:", topKSuccess)
     baseSuccessRate = baseSuccess / len(result_list)
     top1SuccessRate = top1Success / baseSuccess
     topKSuccessRate = topKSuccess / baseSuccess
+    print("Base success num:", baseSuccess)
     print("Base success rate:", baseSuccessRate)
+    # print("Base failed num:", len(result_list) - baseSuccess)
+    print("Top 1 success num:", top1Success)
+    # print("Top K success num:", topKSuccess)
     print("Top 1 success rate:", top1SuccessRate)
-    print("Top K success rate:", topKSuccessRate)
+    # print("Top K success rate:", topKSuccessRate)
     return baseSuccessRate, top1SuccessRate, topKSuccessRate
 
 if __name__ == "__main__":
-    attacks = ["FGSM"]
-    models = ["MobileViT", "ResNet50", "Surrogate"]
-    for attack in attacks:
-        for model in models:
-            for i in range(0, 7):
-                try:
-                    filename = f"./{attack}_new/{attack}_{model}_{2**i}.0ep.json"
-                    print(f"Attack: {attack}, Model: {model}, Ep: {2**i}")
-                    getAttackSuccessRate(filename)
-                    print()
-                except:
-                    continue
+    for method in os.listdir("paper_exp/"):
+        print(method, end="\n\n")
+        for exp in os.listdir("paper_exp/"+method):
+            
+            print(exp\
+                .replace("LocSearchAdv_", "")\
+                .replace("MobileViT_","")\
+                .replace(".json",""))
+            
+            filename = f"paper_exp/{method}/{exp}"
+            getAttackSuccessRate(filename)
+            print()
+    print("\n\n")

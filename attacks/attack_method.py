@@ -20,6 +20,7 @@ class AttackMethod:
         self.perturbed_input = None
         self.logit = None
         self.number_iteration = None
+        self.epsilon = None
         self.param_config = config_dict
 
     def do_perturbation(self, input_tensor: torch.Tensor, label: int) -> "AttackMethod":
@@ -114,6 +115,9 @@ class AttackMethod:
         ## Only for LocSearchAdv
         if self.number_iteration is not None:
             json_dict["num_iteration"] = self.number_iteration
+            
+        if self.epsilon is not None:
+            json_dict["epsilon"] = self.epsilon
 
         result_list = None
         if os.path.exists(filename):
