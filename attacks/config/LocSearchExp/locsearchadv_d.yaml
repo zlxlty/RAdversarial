@@ -3,10 +3,14 @@ LB: -1
 UB: 1
 init_percentage: 0.1
 p: 4.
-r: 2.0
-d: 5
+r: 1.5
+d:
+  - 2
+  - 3
+  - 4
+  - 5
 t: 5
 k: 1
 R: 150
-grid_size: 5
+grid_size: 1
 iters_to_ignore: 30
