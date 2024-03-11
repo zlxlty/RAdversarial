@@ -15,51 +15,6 @@ class LocSearchAdv(AttackMethod):
     LB = -1 #This is just a guess for what the lower and upper bounds should be
     UB = 1  #This is just a guess for what the lower and upper bounds should be
 
-    def cyclic(self, I, r, b, x, y): 
-        """ r is the perturbation parameter"""
-        
-        specific_data = I[:, b, x, y] * r
-        if(specific_data < self.LB):
-            return specific_data + (self.UB - self.LB)
-        elif(specific_data > self.UB):
-            return specific_data - (self.UB - self.LB)
-        else: 
-            return specific_data 
-
-    def rescale(self, I, min, max, LB, UB):
-        I_copy = copy.deepcopy(I)
-        return (I_copy - min) * (UB - LB) / (max - min) + LB
-
-    def inRange(self, val, lower_bound, upper_bound):
-        return lower_bound <= val < upper_bound        
-
-    def top_k_prediction_prob(self, pred, k):
-        prob = nn.Softmax(dim=1)(pred)
-        top, ind = prob.sort(descending= True)
-        print("Top pred prob: {}".format(top[0][0].item()))
-        return ind[0][:k]
-
-    def pert(self, I, p, pts_to_pert):
-        img = copy.deepcopy(I)
-        for x, y in pts_to_pert:
-            sign = torch.sign((img[:, :, x, y]))
-            img[:, :, x, y] = p * sign
-        return img
-    
-    def get_pic_coordinates(self, grid_x, grid_y, grid_size, x_dim, y_dim):
-        start_x = grid_x * grid_size
-        start_y = grid_y * grid_size
-        org_pts = [
-            (start_x+i,start_y+j) 
-            for i in range (grid_size) 
-            for j in range (grid_size)
-        ]
-        
-        org_pts = [ 
-            (x, y) for x, y in org_pts if 0 <= x < x_dim and 0 <= y < y_dim
-        ]
-        return org_pts
-
     def do_perturbation(self, input_tensor, true_label_idx) -> AttackMethod:
         ## Get hyperparam
         p = self.param_config["p"]
@@ -168,3 +123,51 @@ class LocSearchAdv(AttackMethod):
 
         
         return self
+
+
+    def cyclic(self, I, r, b, x, y): 
+        """ r is the perturbation parameter"""
+        
+        specific_data = I[:, b, x, y] * r
+        if(specific_data < self.LB):
+            return specific_data + (self.UB - self.LB)
+        elif(specific_data > self.UB):
+            return specific_data - (self.UB - self.LB)
+        else: 
+            return specific_data 
+
+    def rescale(self, I, min, max, LB, UB):
+        I_copy = copy.deepcopy(I)
+        return (I_copy - min) * (UB - LB) / (max - min) + LB
+
+    def inRange(self, val, lower_bound, upper_bound):
+        return lower_bound <= val < upper_bound        
+
+    def top_k_prediction_prob(self, pred, k):
+        prob = nn.Softmax(dim=1)(pred)
+        top, ind = prob.sort(descending= True)
+        print("Top pred prob: {}".format(top[0][0].item()))
+        return ind[0][:k]
+
+    def pert(self, I, p, pts_to_pert):
+        img = copy.deepcopy(I)
+        for x, y in pts_to_pert:
+            sign = torch.sign((img[:, :, x, y]))
+            img[:, :, x, y] = p * sign
+        return img
+    
+    def get_pic_coordinates(self, grid_x, grid_y, grid_size, x_dim, y_dim):
+        start_x = grid_x * grid_size
+        start_y = grid_y * grid_size
+        org_pts = [
+            (start_x+i,start_y+j) 
+            for i in range (grid_size) 
+            for j in range (grid_size)
+        ]
+        
+        org_pts = [ 
+            (x, y) for x, y in org_pts if 0 <= x < x_dim and 0 <= y < y_dim
+        ]
+        return org_pts
+
+   

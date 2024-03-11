@@ -5,10 +5,10 @@ import yaml
 
 from defines import IMAGE_PATH, EVAL_PATH, CONFIG_PATH, DATASET_PATH
 from classifiers import get_target_model, label2id, VGG16
-from attacks import PGDMethod, FGSMMethod, LocSearchAdv, NoMethod
+from attacks import PGDMethod, FGSMMethod, LocSearchAdv, NoMethod, NoiseMethod
 
 
-def generate_image_data(skip=0, example_img=None | dict[str, str]):
+def generate_image_data(skip=0, example_img=None):
     """
     [dataset]: Get image data from ImageNet1k folder
     Returns:
@@ -50,20 +50,22 @@ attack_methods = {
     "FGSM": {"config": f"{CONFIG_PATH}/fgsm.yaml", "method": FGSMMethod},
     "PGD": {"config": f"{CONFIG_PATH}/pgd.yaml", "method": PGDMethod},
     "NO": {"config": f"{CONFIG_PATH}/no.yaml", "method": NoMethod},
+    "NOISE": {"config": f"{CONFIG_PATH}/noise.yaml", "method": NoiseMethod},
 }
 
 """
 Choose the target models and attack methods here.
 """
 TARGET_MODEL = [
-    "Surrogate", 
+    # "Surrogate", 
     # "MobileViT", 
-    # "ResNet50"
+    "ResNet50"
 ]
 METHOD_NAMES = [
-    "FGSM",
+    # "FGSM",
     # "PGD",
     # "NO"
+    "NOISE",
 ]
 
 if __name__ == "__main__":
@@ -98,9 +100,9 @@ if __name__ == "__main__":
             .save_eval_to_json(
                 image_name,
                 true_label_idx,
-                f"{EVAL_PATH}/{method_name}_test/{method_name}_{model_name}_{config_dict['epsilon'][0]}ep.json",
-            )
-            # .save_perturbation_to_png(f"{IMAGE_PATH}/{method_name}/{model_name}/perturbed_{image_name[:-5]}_{config_dict['epsilon'][0]}ep.png")
+                f"{EVAL_PATH}/{method_name}_new/{method_name}_{model_name}_{config_dict['epsilon'][0]}ep.json",
+            )\
+            .save_perturbation_to_png(f"{IMAGE_PATH}/{method_name}/{model_name}/perturbed_{image_name[:-5]}_{config_dict['epsilon'][0]}ep.png")
             # .save_perturbation_to_json(f"{IMAGE_PATH}/{method_name}/{model_name}/perturbed_{image_name[:-5]}.json")\
             image_processed += 1
             print(f"Image processed: {image_processed}")

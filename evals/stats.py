@@ -27,15 +27,19 @@ def getAttackSuccessRate(filename):
     return baseSuccessRate, top1SuccessRate, topKSuccessRate
 
 if __name__ == "__main__":
-    attacks = ["FGSM"]
+    attacks = ["NOISE"]
     models = ["MobileViT", "ResNet50", "Surrogate"]
     for attack in attacks:
         for model in models:
             for i in range(0, 7):
                 try:
-                    filename = f"./{attack}_new/{attack}_{model}_{2**i}.0ep.json"
+                    filename = f"./{attack}_test/{attack}_{model}_{2**i}.0ep.json"
                     print(f"Attack: {attack}, Model: {model}, Ep: {2**i}")
                     getAttackSuccessRate(filename)
                     print()
                 except:
                     continue
+                
+    # filename = f"./NOISE_test/NOISE_ResNet50_8.0ep.json"
+    # print(f"Attack: NOISE, Model: Surrogate, Ep: 4")
+    # getAttackSuccessRate(filename)
